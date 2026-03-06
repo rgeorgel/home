@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ricardo Georgel</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #07080f;
+      --text:   #eceef8;
+      --muted:  #6b6e88;
+      --border: rgba(255,255,255,0.07);
+      --r:      18px;
+    }
+
+    /* ── Body ── */
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated blobs ── */
+    .blobs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.22;
+      animation: drift linear infinite alternate;
+    }
+    .b1 { width:560px; height:560px; background:#6c63ff; top:-160px; left:-120px; animation-duration:22s; }
+    .b2 { width:480px; height:480px; background:#48b0f1; bottom:-100px; right:-100px; animation-duration:28s; animation-delay:-8s; }
+    .b3 { width:380px; height:380px; background:#f05fa0; top:40%; left:40%; animation-duration:18s; animation-delay:-4s; }
+
+    @keyframes drift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(40px,30px) scale(1.08); }
+    }
+
+    /* ── Cursor glow ── */
+    #glow {
+      position: fixed;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(108,99,255,.1) 0%, transparent 65%);
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      z-index: 0;
+      transition: left .08s linear, top .08s linear;
+    }
+
+    /* ── Bento grid ── */
+    .grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      grid-template-areas:
+        "hero portfolio portfolio"
+        "hero eat       json     "
+        "url  circus    circus   ";
+      gap: 12px;
+      width: 100%;
+      max-width: 880px;
+    }
+
+    /* ── Base card ── */
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.6rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s cubic-bezier(.22,1,.36,1),
+                  border-color .25s,
+                  box-shadow .25s;
+      animation: rise .5s ease both;
+    }
+
+    @keyframes rise {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .card:hover { transform: translateY(-5px) scale(1.012); }
+
+    /* ── Hero card ── */
+    .c-hero {
+      grid-area: hero;
+      min-height: 320px;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.02);
+      animation-delay: 0s;
+    }
+
+    .hero-socials {
+      display: flex;
+      gap: .6rem;
+    }
+
+    .hero-socials a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+
+    .hero-socials a:hover {
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.2);
+      color: var(--text);
+    }
+
+    .hero-socials svg {
+      width: 13px; height: 13px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .hero-name {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      background: linear-gradient(140deg, #fff 30%, #6660cc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: .85rem;
+      line-height: 1.6;
+      margin-top: .5rem;
+    }
+
+    /* ── App cards ── */
+    .c-portfolio { grid-area: portfolio; animation-delay:.08s; }
+    .c-eat       { grid-area: eat;       animation-delay:.13s; }
+    .c-json      { grid-area: json;      animation-delay:.18s; }
+    .c-url       { grid-area: url;       animation-delay:.22s; }
+    .c-circus    { grid-area: circus;    animation-delay:.27s; }
+
+    /* arrow button */
+    .arrow {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+      color: var(--muted);
+      transition: background .2s, color .2s, transform .2s;
+      flex-shrink: 0;
+    }
+    .card:hover .arrow {
+      transform: translate(2px,-2px);
+      background: rgba(255,255,255,.12);
+      color: var(--text);
+    }
+
+    .card-icon { font-size: 2rem; margin-bottom: auto; padding-bottom: 1.2rem; }
+
+    .cat {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: .2rem;
+    }
+    .card-name { font-size: 1rem; font-weight: 650; }
+    .card-desc { font-size: .8rem; color: var(--muted); margin-top: .25rem; line-height: 1.55; }
+
+    /* ── Per-card accent colors ── */
+    .c-portfolio:hover { border-color:rgba(108,99,255,.45); box-shadow:0 0 40px rgba(108,99,255,.12); }
+    .c-portfolio .cat  { color:#9d96ff; }
+
+    .c-eat:hover       { border-color:rgba(255,166,77,.45);  box-shadow:0 0 40px rgba(255,166,77,.12); }
+    .c-eat .cat        { color:#ffa64d; }
+
+    .c-json:hover      { border-color:rgba(72,217,164,.45);  box-shadow:0 0 40px rgba(72,217,164,.12); }
+    .c-json .cat       { color:#48d9a4; }
+
+    .c-url:hover       { border-color:rgba(72,176,241,.45);  box-shadow:0 0 40px rgba(72,176,241,.12); }
+    .c-url .cat        { color:#48b0f1; }
+
+    .c-circus:hover    { border-color:rgba(241,95,160,.45);  box-shadow:0 0 40px rgba(241,95,160,.12); }
+    .c-circus .cat     { color:#f187c0; }
+
+    /* ── Circus wide layout ── */
+    .c-circus {
+      flex-direction: row;
+      align-items: center;
+      gap: 1.4rem;
+    }
+    .c-circus .card-icon { font-size: 2.8rem; margin-bottom: 0; padding-bottom: 0; flex-shrink: 0; }
+    .c-circus .card-body { flex: 1; }
+
+    /* ── Shine sweep on hover ── */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
+      transform: skewX(-20deg);
+      transition: left .5s ease;
+      pointer-events: none;
+    }
+    .card:hover::after { left: 150%; }
+
+    /* ── Responsive ── */
+    @media (max-width: 660px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "hero      hero  "
+          "portfolio eat   "
+          "json      url   "
+          "circus    circus";
+      }
+      .c-hero { min-height: auto; }
+      .c-circus { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "hero" "portfolio" "eat" "json" "url" "circus";
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div id="glow"></div>
+
+  <!-- Bento -->
+  <main class="grid">
+
+    <!-- Hero -->
+    <div class="card c-hero">
+      <div>
+        <div class="hero-name">Ricardo<br>Georgel</div>
+      </div>
+      <div class="hero-socials">
+        <a href="https://www.linkedin.com/in/rgeorgel/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://www.instagram.com/rgeorgel/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+
+    <!-- Portfolio Balancer -->
+    <a class="card c-portfolio" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">📈</div>
+      <span class="cat">Finance</span>
+      <div class="card-name">Portfolio Balancer</div>
+      <p class="card-desc">Track and rebalance investments to stay aligned with your target allocation.</p>
+    </a>
+
+    <!-- What to Eat -->
+    <a class="card c-eat" href="https://what-to-eat.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">🍜</div>
+      <span class="cat">Food</span>
+      <div class="card-name">What to Eat</div>
+      <p class="card-desc">Discover restaurants in Toronto & Vancouver when you can't decide.</p>
+    </a>
+
+    <!-- JSON Formatter -->
+    <a class="card c-json" href="https://formatter.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">🗂️</div>
+      <span class="cat">Tools</span>
+      <div class="card-name">JSON Formatter</div>
+      <p class="card-desc">Paste raw JSON — get it formatted and validated instantly.</p>
+    </a>
+
+    <!-- URL Shortener -->
+    <a class="card c-url" href="https://url.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">🔗</div>
+      <span class="cat">Tools</span>
+      <div class="card-name">URL Shortener</div>
+      <p class="card-desc">Turn long URLs into clean, shareable links.</p>
+    </a>
+
+    <!-- Circus Runner -->
+    <a class="card c-circus" href="https://circus.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <span class="card-icon">🎪</span>
+      <div class="card-body">
+        <span class="cat">Game</span>
+        <div class="card-name">Circus Runner</div>
+        <p class="card-desc">A fast-paced browser game — dodge obstacles and run as far as you can.</p>
+      </div>
+    </a>
+
+  </main>
+
+  <script>
+    const g = document.getElementById('glow');
+    window.addEventListener('mousemove', e => {
+      g.style.left = e.clientX + 'px';
+      g.style.top  = e.clientY + 'px';
+    });
+  </script>
+
+</body>
+</html>

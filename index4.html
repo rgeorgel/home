@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ricardo Georgel — Home</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --border:    #2a2d3d;
+      --accent:    #6c63ff;
+      --accent2:   #48b0f1;
+      --text:      #e6e8f0;
+      --muted:     #8890aa;
+      --radius:    14px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 1rem;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.6rem 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity .25s;
+      border-radius: var(--radius);
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(108,99,255,.2);
+    }
+
+    .card:hover::before { opacity: 0.06; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .icon {
+      font-size: 1.6rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-top: 0.2rem;
+      align-self: flex-start;
+    }
+
+    .tag-finance  { background: rgba(72,176,241,.15); color: #48b0f1; }
+    .tag-food     { background: rgba(255,166,77,.15);  color: #ffa64d; }
+    .tag-tools    { background: rgba(108,99,255,.15);  color: #9d96ff; }
+    .tag-game     { background: rgba(72,255,160,.15);  color: #48ffaa; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 4rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="avatar">RG</div>
+    <h1>Ricardo Georgel</h1>
+    <p>A small collection of things I built.</p>
+  </header>
+
+  <main class="grid">
+
+    <a class="card" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">
+      <div class="card-header">
+        <span class="icon">📈</span>
+        <span class="card-title">Portfolio Balancer</span>
+      </div>
+      <p class="card-desc">Track and rebalance your investments across assets to stay aligned with your target allocation.</p>
+      <span class="tag tag-finance">Finance</span>
+    </a>
+
+    <a class="card" href="https://what-to-eat.georgel.ca/" target="_blank" rel="noopener">
+      <div class="card-header">
+        <span class="icon">🍜</span>
+        <span class="card-title">What to Eat</span>
+      </div>
+      <p class="card-desc">Can't decide where to eat? Discover restaurants in Toronto and Vancouver.</p>
+      <span class="tag tag-food">Food</span>
+    </a>
+
+    <a class="card" href="https://formatter.georgel.ca/" target="_blank" rel="noopener">
+      <div class="card-header">
+        <span class="icon">🗂️</span>
+        <span class="card-title">JSON Formatter</span>
+      </div>
+      <p class="card-desc">Paste raw JSON and get it instantly formatted, validated, and easy to read.</p>
+      <span class="tag tag-tools">Tools</span>
+    </a>
+
+    <a class="card" href="https://url.georgel.ca/" target="_blank" rel="noopener">
+      <div class="card-header">
+        <span class="icon">🔗</span>
+        <span class="card-title">URL Shortener</span>
+      </div>
+      <p class="card-desc">Shorten long URLs into clean, shareable links in one click.</p>
+      <span class="tag tag-tools">Tools</span>
+    </a>
+
+    <a class="card" href="https://circus.georgel.ca/" target="_blank" rel="noopener">
+      <div class="card-header">
+        <span class="icon">🎪</span>
+        <span class="card-title">Circus Runner</span>
+      </div>
+      <p class="card-desc">A fast-paced browser game — dodge obstacles and see how far you can run.</p>
+      <span class="tag tag-game">Game</span>
+    </a>
+
+  </main>
+
+  <footer>
+    <p>georgel.ca &mdash; built with curiosity</p>
+  </footer>
+
+</body>
+</html>

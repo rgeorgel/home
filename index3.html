@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ricardo Georgel</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #020509;
+      --text: #ddeeff;
+      --muted: #3a5068;
+      --r: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Scanlines ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent 0px, transparent 3px,
+        rgba(0,0,0,.035) 3px, rgba(0,0,0,.035) 4px
+      );
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ── Particle canvas ── */
+    #cvs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Dot grid ── */
+    .dot-grid {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,170,230,.13) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 10%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 10%, transparent 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Ambient orbs ── */
+    .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      animation: orb-float ease-in-out infinite alternate;
+    }
+    .o1 { width: 580px; height: 580px; background: rgba(0,40,110,.9);  top:-170px;  left:-110px;  animation-duration: 22s; }
+    .o2 { width: 460px; height: 460px; background: rgba(90,0,70,.9);   bottom:-120px; right:-90px; animation-duration: 27s; animation-delay: -9s; }
+    .o3 { width: 360px; height: 360px; background: rgba(0,70,45,.7);   top: 42%;    left: 36%;   animation-duration: 19s; animation-delay: -5s; }
+
+    @keyframes orb-float {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(28px, 20px) scale(1.07); }
+    }
+
+    /* ── Custom cursor ── */
+    #cursor {
+      position: fixed;
+      width: 22px; height: 22px;
+      border: 1.5px solid rgba(0,210,255,.65);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      transition: width .18s, height .18s, border-color .18s, opacity .18s;
+    }
+    #cursor.big {
+      width: 42px; height: 42px;
+      border-color: rgba(0,210,255,.35);
+    }
+    #cursor-dot {
+      position: fixed;
+      width: 4px; height: 4px;
+      background: #00d2ff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px #00d2ff;
+    }
+
+    /* ── Bento grid ── */
+    .bento {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-areas:
+        "hero portfolio portfolio"
+        "hero eat       json     "
+        "url  circus    circus   ";
+      gap: 10px;
+      width: 100%;
+      max-width: 880px;
+    }
+
+    /* ── Card base ── */
+    .card {
+      background: rgba(2, 8, 20, .88);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--r);
+      padding: 1.6rem;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+      transition: border-color .3s, box-shadow .3s;
+      animation: card-in .65s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(30px) scale(.965); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+
+    /* Corner brackets */
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-style: solid;
+      border-color: var(--neon, #00d4ff);
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    .card::before { top: 10px;    left: 10px;    border-width: 1.5px 0 0 1.5px; }
+    .card::after  { bottom: 10px; right: 10px;   border-width: 0 1.5px 1.5px 0; }
+    .card:hover::before,
+    .card:hover::after { opacity: 1; }
+
+    /* Holographic shine (position driven by JS CSS vars) */
+    .shine {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at var(--mx, 50%) var(--my, 50%),
+        rgba(255,255,255,.075) 0%,
+        transparent 55%
+      );
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+      border-radius: var(--r);
+    }
+    .card:hover .shine { opacity: 1; }
+
+    /* ── Card areas + accent colors ── */
+    .c-hero      { grid-area: hero;      --neon: #00d4ff; animation-delay: .00s; min-height: 320px; justify-content: space-between; }
+    .c-portfolio { grid-area: portfolio; --neon: #00d4ff; animation-delay: .07s; }
+    .c-eat       { grid-area: eat;       --neon: #ffaa00; animation-delay: .12s; }
+    .c-json      { grid-area: json;      --neon: #00ff88; animation-delay: .17s; }
+    .c-url       { grid-area: url;       --neon: #ff2d78; animation-delay: .22s; }
+    .c-circus    { grid-area: circus;    --neon: #b060ff; animation-delay: .27s; }
+
+    .c-portfolio:hover { border-color: rgba(0,212,255,.35);  box-shadow: 0 0 55px rgba(0,212,255,.11), inset 0 0 30px rgba(0,212,255,.03); }
+    .c-eat:hover       { border-color: rgba(255,170,0,.35);  box-shadow: 0 0 55px rgba(255,170,0,.11), inset 0 0 30px rgba(255,170,0,.03); }
+    .c-json:hover      { border-color: rgba(0,255,136,.35);  box-shadow: 0 0 55px rgba(0,255,136,.11), inset 0 0 30px rgba(0,255,136,.03); }
+    .c-url:hover       { border-color: rgba(255,45,120,.35); box-shadow: 0 0 55px rgba(255,45,120,.11),inset 0 0 30px rgba(255,45,120,.03); }
+    .c-circus:hover    { border-color: rgba(176,96,255,.35); box-shadow: 0 0 55px rgba(176,96,255,.11),inset 0 0 30px rgba(176,96,255,.03); }
+
+    /* ── Hero name + glitch ── */
+    .hero-name {
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.06;
+      color: #fff;
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0; top: 0;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      white-space: nowrap;
+    }
+    .glitch::before {
+      color: #00d4ff;
+      clip-path: polygon(0 22%, 100% 22%, 100% 44%, 0 44%);
+      animation: glitch-a 7s infinite;
+    }
+    .glitch::after {
+      color: #ff2d78;
+      clip-path: polygon(0 58%, 100% 58%, 100% 76%, 0 76%);
+      animation: glitch-b 7s infinite;
+    }
+
+    @keyframes glitch-a {
+      0%, 87%, 100% { transform: translate(0);          opacity: 0; }
+      88%           { transform: translate(-5px, 2px);  opacity: .9; }
+      90%           { transform: translate(4px, -1px);  opacity: .9; }
+      92%           { transform: translate(-3px, 1px);  opacity: .9; }
+      93%           { transform: translate(0);          opacity: 0; }
+    }
+    @keyframes glitch-b {
+      0%, 84%, 100% { transform: translate(0);         opacity: 0; }
+      85%           { transform: translate(5px, -2px); opacity: .9; }
+      88%           { transform: translate(-4px, 2px); opacity: .9; }
+      91%           { transform: translate(2px, -1px); opacity: .9; }
+      92%           { transform: translate(0);         opacity: 0; }
+    }
+
+    /* ── Social buttons ── */
+    .hero-socials { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+    .hero-socials a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(0,212,255,.22);
+      border-radius: 999px;
+      padding: 5px 13px;
+      font-size: .72rem;
+      font-weight: 500;
+      color: rgba(0,212,255,.55);
+      text-decoration: none;
+      background: rgba(0,212,255,.04);
+      transition: border-color .25s, color .25s, box-shadow .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-socials a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(0,212,255,.12), transparent);
+      transform: translateX(-100%);
+      transition: transform .45s ease;
+    }
+    .hero-socials a:hover {
+      border-color: rgba(0,212,255,.65);
+      color: #00d4ff;
+      box-shadow: 0 0 16px rgba(0,212,255,.22);
+    }
+    .hero-socials a:hover::before { transform: translateX(100%); }
+    .hero-socials svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── App card elements ── */
+    .cat {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: .2rem;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: auto;
+      padding-bottom: 1.2rem;
+      filter: drop-shadow(0 0 8px var(--neon));
+      transition: filter .3s;
+    }
+    .card:hover .card-icon { filter: drop-shadow(0 0 14px var(--neon)); }
+
+    .card-name { font-size: 1rem; font-weight: 600; }
+    .card-desc { font-size: .8rem; color: var(--muted); margin-top: .25rem; line-height: 1.55; }
+
+    /* Arrow */
+    .arrow {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem;
+      color: var(--muted);
+      transition: border-color .25s, color .25s, box-shadow .25s, transform .25s;
+    }
+    .card:hover .arrow {
+      border-color: var(--neon);
+      color: var(--neon);
+      box-shadow: 0 0 14px var(--neon);
+      transform: translate(2px, -2px);
+    }
+
+    /* Circus wide layout */
+    .c-circus { flex-direction: row; align-items: center; gap: 1.4rem; }
+    .c-circus .card-icon  { font-size: 2.8rem; margin-bottom: 0; padding-bottom: 0; flex-shrink: 0; }
+    .c-circus .card-body  { flex: 1; }
+
+    /* ── Responsive ── */
+    @media (max-width: 660px) {
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "hero      hero  "
+          "portfolio eat   "
+          "json      url   "
+          "circus    circus";
+      }
+      .c-hero   { min-height: auto; }
+      .c-circus { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 400px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-areas: "hero" "portfolio" "eat" "json" "url" "circus";
+      }
+    }
+    @media (pointer: coarse) {
+      body { cursor: auto; }
+      #cursor, #cursor-dot { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-dot"></div>
+
+  <!-- Background layers -->
+  <canvas id="cvs"></canvas>
+  <div class="dot-grid"></div>
+  <div class="orbs">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+  </div>
+
+  <!-- Bento -->
+  <main class="bento">
+
+    <!-- Hero -->
+    <div class="card c-hero">
+      <div class="shine"></div>
+      <div>
+        <div class="hero-name">
+          <span class="glitch" data-text="Ricardo">Ricardo</span><br>
+          <span class="glitch" data-text="Georgel">Georgel</span>
+        </div>
+      </div>
+      <div class="hero-socials">
+        <a href="https://www.linkedin.com/in/rgeorgel/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://www.instagram.com/rgeorgel/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+
+    <!-- Portfolio Balancer -->
+    <a class="card c-portfolio" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <div class="card-icon">📈</div>
+      <span class="cat">Finance</span>
+      <div class="card-name">Portfolio Balancer</div>
+      <p class="card-desc">Track and rebalance investments to stay aligned with your target allocation.</p>
+    </a>
+
+    <!-- What to Eat -->
+    <a class="card c-eat" href="https://what-to-eat.georgel.ca/" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <div class="card-icon">🍜</div>
+      <span class="cat">Food</span>
+      <div class="card-name">What to Eat</div>
+      <p class="card-desc">Discover restaurants in Toronto & Vancouver when you can't decide.</p>
+    </a>
+
+    <!-- JSON Formatter -->
+    <a class="card c-json" href="https://formatter.georgel.ca/" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <div class="card-icon">🗂️</div>
+      <span class="cat">Tools</span>
+      <div class="card-name">JSON Formatter</div>
+      <p class="card-desc">Paste raw JSON — get it formatted and validated instantly.</p>
+    </a>
+
+    <!-- URL Shortener -->
+    <a class="card c-url" href="https://url.georgel.ca/" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <div class="card-icon">🔗</div>
+      <span class="cat">Tools</span>
+      <div class="card-name">URL Shortener</div>
+      <p class="card-desc">Turn long URLs into clean, shareable links.</p>
+    </a>
+
+    <!-- Circus Runner -->
+    <a class="card c-circus" href="https://circus.georgel.ca/" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <span class="card-icon">🎪</span>
+      <div class="card-body">
+        <span class="cat">Game</span>
+        <div class="card-name">Circus Runner</div>
+        <p class="card-desc">A fast-paced browser game — dodge obstacles and run as far as you can.</p>
+      </div>
+    </a>
+
+  </main>
+
+  <script>
+    /* ── Custom cursor ── */
+    const cur = document.getElementById('cursor');
+    const dot = document.getElementById('cursor-dot');
+
+    document.addEventListener('mousemove', e => {
+      const x = e.clientX + 'px', y = e.clientY + 'px';
+      cur.style.left = x; cur.style.top = y;
+      dot.style.left = x; dot.style.top = y;
+    });
+
+    document.querySelectorAll('a').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('big'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+    });
+
+    /* ── Particle constellation ── */
+    const cvs = document.getElementById('cvs');
+    const ctx = cvs.getContext('2d');
+    let W, H, pts;
+
+    function resize() {
+      W = cvs.width  = window.innerWidth;
+      H = cvs.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', () => { resize(); pts = mkPts(58); });
+
+    function mkPts(n) {
+      return Array.from({ length: n }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - .5) * .22,
+        vy: (Math.random() - .5) * .22,
+        r: Math.random() * 1.1 + .4,
+      }));
+    }
+    pts = mkPts(58);
+
+    (function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      /* lines */
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 115) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(0,180,240,${(1 - d / 115) * .11})`;
+            ctx.lineWidth = .5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      /* dots */
+      for (const p of pts) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = W; else if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H; else if (p.y > H) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,185,245,.32)';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    })();
+
+    /* ── 3D tilt + holographic shine ── */
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width;   // 0-1
+        const ny = (e.clientY - r.top)  / r.height;  // 0-1
+        const rx = (ny - .5) * -11;
+        const ry = (nx - .5) *  11;
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        card.style.setProperty('--mx', (nx * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', (ny * 100).toFixed(1) + '%');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  </script>
+
+</body>
+</html>
