@@ -358,11 +358,187 @@
           "hero" "portfolio" "eat" "json" "url" "circus";
       }
     }
+
+    /* ── Easter eggs ── */
+    #matrix-cvs {
+      position: fixed; inset: 0; z-index: 900;
+      pointer-events: none; opacity: 0; transition: opacity .5s;
+    }
+    #matrix-cvs.active { opacity: 1; pointer-events: all; }
+
+    #access-msg {
+      position: fixed; inset: 0; z-index: 901;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0; transition: opacity .4s;
+    }
+    #access-msg.show { opacity: 1; }
+    #access-msg span {
+      font-size: clamp(1.4rem, 4vw, 2.5rem); font-weight: 900;
+      letter-spacing: 8px; color: #00ff88;
+      text-shadow: 0 0 20px #00ff88, 0 0 60px #00ff88, 0 0 120px #00ff88;
+    }
+
+    #sudo-popup {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      background: rgba(0,0,0,.96);
+      border: 1px solid rgba(255,60,60,.25); border-left: 3px solid #ff003c;
+      border-radius: var(--r); padding: .75rem 1.4rem;
+      font-size: .78rem; color: #ff003c;
+      z-index: 800; opacity: 0;
+      transition: opacity .2s, transform .2s;
+      pointer-events: none; white-space: nowrap;
+    }
+    #sudo-popup.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    #achievement {
+      position: fixed; top: 1.5rem; left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: rgba(0,0,0,.96);
+      border: 1px solid rgba(255,230,0,.2); border-left: 3px solid #ffe600;
+      border-radius: var(--r); padding: .7rem 1.4rem;
+      z-index: 800; opacity: 0;
+      transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .45s;
+      pointer-events: none;
+    }
+    #achievement.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #achievement .ach-tag {
+      font-size: .55rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #ffe600; margin-bottom: 3px;
+    }
+    #achievement .ach-text { font-size: .78rem; color: var(--text); }
+
+    #idle-screen {
+      position: fixed; inset: 0; z-index: 890;
+      background: rgba(14,17,32,.94);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .8rem;
+      opacity: 0; transition: opacity 1.2s; pointer-events: none;
+    }
+    #idle-screen.show { opacity: 1; pointer-events: all; }
+    .idle-main {
+      font-size: clamp(.85rem,2vw,1.1rem); letter-spacing: 3px; color: var(--muted);
+      animation: idlePulse 2.5s ease-in-out infinite;
+    }
+    .idle-sub { font-size: .6rem; letter-spacing: 2px; color: rgba(90,99,136,.5); }
+    @keyframes idlePulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+    body.glitch-storm::after {
+      content: ''; position: fixed; inset: 0; z-index: 800; pointer-events: none;
+      animation: stormFlash .09s infinite;
+    }
+    @keyframes stormFlash {
+      0%   { background: rgba(255,0,60,.05); }
+      33%  { background: rgba(0,229,255,.05); }
+      66%  { background: rgba(176,96,255,.04); }
+      100% { background: rgba(255,230,0,.03); }
+    }
+    body.glitch-storm a.card,
+    body.glitch-storm .c-hero { animation: stormCard .09s infinite !important; }
+    @keyframes stormCard {
+      0%   { transform: translateX(0) skewX(0deg); filter: none; }
+      20%  { transform: translateX(-5px) skewX(-2deg); filter: hue-rotate(90deg) saturate(2); }
+      40%  { transform: translateX(4px) skewX(1.5deg); filter: hue-rotate(180deg) brightness(1.4); }
+      60%  { transform: translateX(-3px); filter: none; }
+      80%  { transform: translateX(3px) skewX(2deg); filter: hue-rotate(270deg); }
+      100% { transform: translateX(0); filter: none; }
+    }
+
+    .burst-wrap { position: fixed; pointer-events: none; z-index: 9990; }
+    .burst-dot {
+      position: absolute; width: 5px; height: 5px; border-radius: 50%;
+      transform: translate(-50%,-50%);
+      animation: burstOut .65s ease-out forwards;
+    }
+    @keyframes burstOut {
+      0%   { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); }
+    }
+
+    .decrypt-line {
+      font-size: .68rem; color: #00e5ff; margin-top: .25rem;
+      overflow: hidden; white-space: nowrap; width: 0;
+      animation: typeReveal .35s steps(30, end) forwards;
+    }
+    @keyframes typeReveal { to { width: 100%; } }
+
+    /* ── Secret corner card ── */
+    #secret-card {
+      position: fixed;
+      bottom: 1rem; left: 1rem;
+      width: 280px;
+      background: rgba(10,12,24,.97);
+      border: 1px solid rgba(255,255,255,.07);
+      border-left: 2px solid #ffe600;
+      border-radius: var(--r);
+      padding: 1.1rem 1.2rem;
+      z-index: 850;
+      transform: translateX(calc(-100% - 1.5rem));
+      opacity: 0;
+      transition: transform .4s cubic-bezier(.22,1,.36,1), opacity .4s;
+      pointer-events: none;
+    }
+    #secret-card.show {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    #secret-card .sc-title {
+      font-size: .6rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #ffe600; margin-bottom: .75rem;
+    }
+    #secret-card .sc-title::before { content: '[ '; }
+    #secret-card .sc-title::after  { content: ' ]'; }
+    #secret-card table {
+      width: 100%; border-collapse: collapse; font-size: .65rem; line-height: 1.5;
+    }
+    #secret-card td { padding: .2rem .1rem; vertical-align: top; }
+    #secret-card td:first-child {
+      color: #00e5ff; white-space: nowrap; padding-right: .6rem; font-weight: 600;
+    }
+    #secret-card td:last-child { color: var(--muted); }
+    #secret-card tr + tr td { border-top: 1px solid rgba(255,255,255,.04); }
+    #corner-zone {
+      position: fixed; bottom: 0; left: 0;
+      width: 64px; height: 64px;
+      z-index: 849;
+    }
   </style>
 </head>
 <body>
   <div id="cur-ring"></div>
   <div id="cur-dot"></div>
+
+  <!-- Corner hot-spot -->
+  <div id="corner-zone"></div>
+  <div id="secret-card">
+    <div class="sc-title">Easter Eggs</div>
+    <table>
+      <tr><td>↑↑↓↓←→←→BA</td><td>Matrix rain + ACCESS GRANTED</td></tr>
+      <tr><td>type <em>sudo</em></td><td>Permission denied popup</td></tr>
+      <tr><td>type <em>hack</em></td><td>Fullscreen glitch storm</td></tr>
+      <tr><td>Click anywhere</td><td>Neon particle burst</td></tr>
+      <tr><td>Name ×5 fast</td><td>Glitch storm</td></tr>
+      <tr><td>Hold $ prompt</td><td>Decrypts classified data</td></tr>
+      <tr><td>Hover all cards</td><td>Achievement unlocked</td></tr>
+      <tr><td>Idle 30s</td><td>System idle screen</td></tr>
+      <tr><td>Visit at night</td><td>Warm red neon palette</td></tr>
+      <tr><td>↙ corner</td><td>You found this card 👾</td></tr>
+    </table>
+  </div>
+
+  <!-- Easter egg overlays -->
+  <canvas id="matrix-cvs"></canvas>
+  <div id="access-msg"><span>ACCESS&nbsp;GRANTED</span></div>
+  <div id="sudo-popup"></div>
+  <div id="achievement">
+    <div class="ach-tag">🏆 Achievement Unlocked</div>
+    <div class="ach-text">Explorer — hovered all projects</div>
+  </div>
+  <div id="idle-screen">
+    <div class="idle-main">SYSTEM IDLE</div>
+    <div class="idle-sub">— PRESS ANY KEY TO CONTINUE —</div>
+  </div>
 
   <main class="grid">
 
@@ -483,6 +659,215 @@
       const el = document.querySelector(sel);
       if (el) el.style.setProperty(prop, toCSS(SESSION[i]));
     });
+  </script>
+
+  <script>
+    /* ══ Easter eggs ══ */
+
+    // 1. Konami Code → matrix rain + ACCESS GRANTED
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+                    'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiIdx = 0;
+
+    // 2+3. Keyboard buffer for "sudo" / "hack"
+    let keyBuf = '';
+
+    document.addEventListener('keydown', e => {
+      resetIdle();
+      document.getElementById('idle-screen').classList.remove('show');
+
+      // Konami
+      if (e.key === KONAMI[konamiIdx]) {
+        konamiIdx++;
+        if (konamiIdx === KONAMI.length) { konamiIdx = 0; triggerMatrix(); }
+      } else {
+        konamiIdx = e.key === KONAMI[0] ? 1 : 0;
+      }
+
+      // Word buffer
+      if (e.key.length === 1) {
+        keyBuf = (keyBuf + e.key.toLowerCase()).slice(-8);
+        if (keyBuf.endsWith('sudo')) { keyBuf = ''; showSudo(); }
+        if (keyBuf.endsWith('hack')) { keyBuf = ''; triggerGlitchStorm(); }
+      }
+    });
+
+    // Matrix rain
+    function triggerMatrix() {
+      const cvs = document.getElementById('matrix-cvs');
+      const ctx  = cvs.getContext('2d');
+      cvs.width  = window.innerWidth;
+      cvs.height = window.innerHeight;
+      cvs.classList.add('active');
+
+      const cols  = Math.floor(cvs.width / 16);
+      const drops = Array(cols).fill(1);
+      const chars = 'アイウエオカキクケコサシスセソタチツテトABCDEF0123456789';
+
+      const tick = setInterval(() => {
+        ctx.fillStyle = 'rgba(14,17,32,0.07)';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+        ctx.fillStyle = '#00ff88';
+        ctx.font = '14px monospace';
+        drops.forEach((y, i) => {
+          ctx.fillText(chars[Math.random() * chars.length | 0], i * 16, y * 16);
+          if (y * 16 > cvs.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        });
+      }, 40);
+
+      setTimeout(() => document.getElementById('access-msg').classList.add('show'), 1500);
+      setTimeout(() => {
+        clearInterval(tick);
+        document.getElementById('access-msg').classList.remove('show');
+        cvs.classList.remove('active');
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+      }, 3600);
+    }
+
+    // Sudo popup
+    const SUDO_MSGS = [
+      'sudo: Permission denied — nice try ツ',
+      'sudo: you are not in the sudoers file.',
+      'sudo: access level INSUFFICIENT',
+      '[sudo] password for visitor: ******* — nope',
+    ];
+    function showSudo() {
+      const el = document.getElementById('sudo-popup');
+      el.textContent = '$ ' + SUDO_MSGS[Math.random() * SUDO_MSGS.length | 0];
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    // Glitch storm (shared for "hack" and name 5×)
+    function triggerGlitchStorm() {
+      document.body.classList.add('glitch-storm');
+      setTimeout(() => document.body.classList.remove('glitch-storm'), 2000);
+    }
+
+    // 4. Click burst — neon particles at cursor
+    document.addEventListener('click', e => {
+      if (e.target.closest('#matrix-cvs,#idle-screen')) return;
+      const wrap  = document.createElement('div');
+      wrap.className = 'burst-wrap';
+      document.body.appendChild(wrap);
+      const color = `hsl(${Math.random()*360|0},100%,65%)`;
+      for (let i = 0; i < 10; i++) {
+        const dot   = document.createElement('div');
+        dot.className = 'burst-dot';
+        const angle = (i / 10) * Math.PI * 2;
+        const dist  = 36 + Math.random() * 44;
+        dot.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;background:${color};`
+          + `--dx:${(Math.cos(angle)*dist).toFixed(1)}px;`
+          + `--dy:${(Math.sin(angle)*dist).toFixed(1)}px;`;
+        wrap.appendChild(dot);
+      }
+      setTimeout(() => wrap.remove(), 700);
+    });
+
+    // 5. Click name 5× fast → glitch storm
+    let nameClicks = 0, nameTimer;
+    document.querySelector('.hero-name').addEventListener('click', () => {
+      nameClicks++;
+      clearTimeout(nameTimer);
+      nameTimer = setTimeout(() => { nameClicks = 0; }, 900);
+      if (nameClicks >= 5) { nameClicks = 0; triggerGlitchStorm(); }
+    });
+
+    // 6. Hold terminal prompt 800ms → decrypt secrets
+    const termPrompt = document.querySelector('.term-prompt');
+    const heroInner  = document.querySelector('.c-hero > div');
+    const SECRETS = [
+      '> NAME: RICARDO GEORGEL',
+      '> STATUS: ONLINE',
+      '> SKILLS: [CLASSIFIED]',
+      '> THREAT LEVEL: MAXIMUM',
+      '> LOCATION: UNDISCLOSED',
+    ];
+    let holdT, decrypting = false;
+    termPrompt.addEventListener('mousedown', () => {
+      holdT = setTimeout(() => {
+        if (decrypting) return;
+        decrypting = true;
+        SECRETS.forEach((msg, i) => {
+          setTimeout(() => {
+            const line = document.createElement('div');
+            line.className = 'decrypt-line';
+            line.textContent = msg;
+            heroInner.appendChild(line);
+            if (i === SECRETS.length - 1) {
+              setTimeout(() => {
+                document.querySelectorAll('.decrypt-line').forEach(l => l.remove());
+                decrypting = false;
+              }, 4000);
+            }
+          }, i * 380);
+        });
+      }, 800);
+    });
+    ['mouseup','mouseleave'].forEach(ev =>
+      termPrompt.addEventListener(ev, () => clearTimeout(holdT))
+    );
+
+    // 7. Hover all 5 cards → achievement toast
+    const hoveredSet = new Set();
+    let achShown = false;
+    document.querySelectorAll('a.card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        const key = [...card.classList].find(c => c.startsWith('c-'));
+        if (key) hoveredSet.add(key);
+        if (hoveredSet.size >= 5 && !achShown) {
+          achShown = true;
+          const el = document.getElementById('achievement');
+          el.classList.add('show');
+          setTimeout(() => el.classList.remove('show'), 3500);
+        }
+      });
+    });
+
+    // 8. Idle 30s → dim screen
+    let idleTimer;
+    function resetIdle() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() =>
+        document.getElementById('idle-screen').classList.add('show'), 30000);
+    }
+    ['mousemove','click','scroll'].forEach(ev =>
+      document.addEventListener(ev, () => {
+        resetIdle();
+        document.getElementById('idle-screen').classList.remove('show');
+      })
+    );
+    resetIdle();
+
+    // 10. Corner hot-spot → secret card
+    const secretCard = document.getElementById('secret-card');
+    const cornerZone = document.getElementById('corner-zone');
+    let cornerActive = false;
+
+    function setCorner(on) {
+      if (on === cornerActive) return;
+      cornerActive = on;
+      secretCard.classList.toggle('show', on);
+    }
+
+    cornerZone.addEventListener('mouseenter', () => setCorner(true));
+    cornerZone.addEventListener('mouseleave', () => setCorner(false));
+    secretCard.addEventListener('mouseenter', () => setCorner(true));
+    secretCard.addEventListener('mouseleave', () => setCorner(false));
+
+    // 9. Night mode (20:00–05:59) → warm red/orange neons
+    const hour = new Date().getHours();
+    if (hour >= 20 || hour < 6) {
+      const NIGHT = [[255,30,60],[255,80,0],[255,160,0],[200,0,100],[180,0,255]];
+      NIGHT.sort(() => Math.random() - .5);
+      [['.c-portfolio','--p-neon'],['.c-eat','--e-neon'],
+       ['.c-json','--j-neon'],['.c-url','--u-neon'],['.c-circus','--c-neon']]
+      .forEach(([sel, prop], i) => {
+        const el = document.querySelector(sel);
+        if (el) el.style.setProperty(prop, `rgb(${NIGHT[i].join(',')})`);
+      });
+    }
   </script>
 
 </body>
