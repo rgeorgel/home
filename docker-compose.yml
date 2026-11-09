@@ -1,8 +1,4 @@
 services:
   web:
-    image: nginx:alpine
-    ports:
-      - "8093:80"
-    volumes:
-      - .:/usr/share/nginx/html:ro
+    build: .
     restart: unless-stopped
