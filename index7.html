@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-72TQVP3Q7X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-72TQVP3Q7X');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ricardo Georgel — Stage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #fff1e3;
+      --accent: #e32a1c;
+      --serif: 'Instrument Serif', 'Times New Roman', serif;
+      --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-snap-type: y proximity; }
+    body {
+      background: var(--accent);
+      color: var(--cream);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+
+    /* film grain + vignette */
+    .veil {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(120% 100% at 50% 45%, transparent 45%, rgba(0,0,0,.42) 100%);
+    }
+
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 5;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.3rem clamp(1.1rem, 4vw, 2.6rem);
+      font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 500;
+    }
+    header nav { display: flex; gap: 1.4rem; }
+    header a { opacity: .75; transition: opacity .25s; }
+    header a:hover { opacity: 1; }
+
+    /* ── Panels ── */
+    main { position: relative; z-index: 2; }
+    .panel {
+      min-height: 100vh; min-height: 100svh;
+      scroll-snap-align: start;
+      display: flex; align-items: center;
+      padding: 6rem clamp(1.2rem, 7vw, 7rem);
+    }
+    .inner { max-width: min(46rem, 58vw); }
+    .panel.center { justify-content: center; text-align: center; }
+    .panel.center .inner { max-width: 60rem; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: .7rem;
+      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 500;
+      margin-bottom: 1.4rem;
+    }
+    .kicker::before { content: ''; width: 2.2rem; height: 1px; background: currentColor; opacity: .6; }
+    .panel.center .kicker::after { content: ''; width: 2.2rem; height: 1px; background: currentColor; opacity: .6; }
+
+    h1, h2 {
+      font-family: var(--serif); font-weight: 400;
+      line-height: .92; letter-spacing: -.02em;
+      text-shadow: 0 2px 30px rgba(0,0,0,.18);
+    }
+    h1 { font-size: clamp(5rem, 22vw, 19rem); }
+    h2 { font-size: clamp(3.2rem, 9.5vw, 9rem); }
+    em { font-style: italic; }
+
+    .lede {
+      margin-top: 1.6rem;
+      font-size: clamp(1rem, 1.5vw, 1.25rem); line-height: 1.55;
+      max-width: 30rem; opacity: .92;
+    }
+    .panel.center .lede { margin-inline: auto; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .7rem;
+      margin-top: 2rem;
+      padding: .9rem 1.5rem; border-radius: 999px;
+      background: var(--cream); color: var(--accent);
+      font-weight: 600; font-size: .9rem;
+      transition: transform .4s cubic-bezier(.2,1.5,.3,1), box-shadow .3s, color .6s;
+      box-shadow: 0 10px 30px -12px rgba(0,0,0,.5);
+    }
+    .btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 18px 40px -14px rgba(0,0,0,.6); }
+    .btn i { font-style: normal; display: inline-block; transition: transform .3s; }
+    .btn:hover i { transform: translate(3px,-3px); }
+    .btn.ghost { background: transparent; color: var(--cream); border: 1px solid rgba(255,241,227,.5); box-shadow: none; }
+    .btn.ghost:hover { background: var(--cream); color: var(--accent); }
+    .btns { display: flex; gap: .7rem; flex-wrap: wrap; }
+    .panel.center .btns { justify-content: center; }
+
+    /* word-by-word rise */
+    .wd { display: inline-block; overflow: hidden; vertical-align: bottom; padding: .08em .04em .14em 0; margin: -.08em 0 -.14em; }
+    .wd > span { display: inline-block; transform: translateY(115%) rotate(6deg); transform-origin: left bottom; transition: transform 1s cubic-bezier(.2,.9,.2,1); transition-delay: calc(var(--i) * 70ms); }
+    .panel.on .wd > span { transform: none; }
+
+    .rise { opacity: 0; transform: translateY(22px); filter: blur(6px); transition: opacity .8s, transform .8s cubic-bezier(.2,.9,.2,1), filter .8s; }
+    .panel.on .rise { opacity: 1; transform: none; filter: none; }
+    .panel.on .rise.r1 { transition-delay: .05s; }
+    .panel.on .rise.r2 { transition-delay: .35s; }
+    .panel.on .rise.r3 { transition-delay: .5s; }
+
+    /* ── Progress pill ── */
+    .pill {
+      position: fixed; left: 50%; bottom: clamp(1rem, 3vh, 1.8rem); transform: translateX(-50%);
+      z-index: 5;
+      display: flex; align-items: center; gap: .9rem;
+      padding: .6rem 1.1rem; border-radius: 999px;
+      background: rgba(20,8,6,.38);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,241,227,.16);
+      font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .pill .bar { width: clamp(5rem, 16vw, 10rem); height: 2px; background: rgba(255,241,227,.25); border-radius: 2px; overflow: hidden; }
+    .pill .bar b { display: block; height: 100%; width: 100%; background: var(--cream); transform-origin: left; transform: scaleX(0); }
+
+    @media (max-width: 760px) {
+      .panel { align-items: flex-end; padding-bottom: 7.5rem; }
+      .panel.center { align-items: center; padding-bottom: 6rem; }
+      .inner { max-width: 100%; }
+      header nav { gap: 1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-snap-type: none; }
+      .wd > span, .rise { transition: none; transform: none; opacity: 1; filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="veil"></div>
+
+  <header>
+    <span>Ricardo Georgel</span>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="panel center" data-color="#e32a1c">
+      <div class="inner">
+        <h1 data-split>Hello<em>.</em></h1>
+        <p class="lede rise r2">Scroll — the stage is yours.</p>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#d4221a">
+      <div class="inner">
+        <div class="kicker rise r1">Who</div>
+        <h2 data-split>I’m <em>Ricardo</em> Georgel.</h2>
+        <p class="lede rise r2">I build small, useful things for the web — and I ship them. Here are five.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="work" data-color="#16824a">
+      <div class="inner">
+        <div class="kicker rise r1">01 — Finance</div>
+        <h2 data-split>Portfolio <em>Balancer</em></h2>
+        <p class="lede rise r2">Track and rebalance investments to stay aligned with your target allocation.</p>
+        <a class="btn rise r3" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#e8641a">
+      <div class="inner">
+        <div class="kicker rise r1">02 — Food</div>
+        <h2 data-split>What to <em>Eat</em></h2>
+        <p class="lede rise r2">Discover restaurants in Toronto &amp; Vancouver when you can’t decide.</p>
+        <a class="btn rise r3" href="https://what-to-eat.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#2646d8">
+      <div class="inner">
+        <div class="kicker rise r1">03 — Tools</div>
+        <h2 data-split><em>JSON</em> Formatter</h2>
+        <p class="lede rise r2">Paste raw JSON — get it formatted and validated instantly.</p>
+        <a class="btn rise r3" href="https://formatter.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#0e8a8c">
+      <div class="inner">
+        <div class="kicker rise r1">04 — Tools</div>
+        <h2 data-split>URL <em>Shortener</em></h2>
+        <p class="lede rise r2">Turn long URLs into clean, shareable links.</p>
+        <a class="btn rise r3" href="https://url.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#8a2bd6">
+      <div class="inner">
+        <div class="kicker rise r1">05 — Game</div>
+        <h2 data-split><em>Circus</em> Runner</h2>
+        <p class="lede rise r2">A fast-paced browser game — dodge obstacles and run as far as you can.</p>
+        <a class="btn rise r3" href="https://circus.georgel.ca/" target="_blank" rel="noopener">Play it <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel center" id="contact" data-color="#141210">
+      <div class="inner">
+        <div class="kicker rise r1">Contact</div>
+        <h2 data-split>Say <em>hi.</em></h2>
+        <div class="btns rise r2">
+          <a class="btn" href="https://www.linkedin.com/in/rgeorgel/" target="_blank" rel="noopener">LinkedIn <i>↗</i></a>
+          <a class="btn ghost" href="https://www.instagram.com/rgeorgel/" target="_blank" rel="noopener">Instagram <i>↗</i></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="pill" aria-hidden="true"><span id="count">01 / 08</span><span class="bar"><b id="bar"></b></span><span>Scroll</span></div>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const panels = [...document.querySelectorAll('.panel')];
+    const COLORS = panels.map(p => new THREE.Color(p.dataset.color));
+    const N = panels.length;
+
+    /* ───────── text: split headings into rising words ───────── */
+    document.querySelectorAll('[data-split]').forEach(h => {
+      let i = 0;
+      h.setAttribute('aria-label', h.textContent);
+      const walk = node => {
+        [...node.childNodes].forEach(ch => {
+          if (ch.nodeType === 3) {
+            const frag = document.createDocumentFragment();
+            ch.textContent.split(/(\s+)/).forEach(tok => {
+              if (!tok) return;
+              if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(' ')); return; }
+              const o = document.createElement('span'); o.className = 'wd'; o.setAttribute('aria-hidden', 'true');
+              const s = document.createElement('span'); s.textContent = tok; s.style.setProperty('--i', i++);
+              o.appendChild(s); frag.appendChild(o);
+            });
+            ch.replaceWith(frag);
+          } else walk(ch);
+        });
+      };
+      walk(h);
+    });
+    panels[0].classList.add('on');   // the rest are toggled from scroll position in the render loop
+
+    /* ───────── scene ───────── */
+    const canvas = document.getElementById('stage');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
+    camera.position.set(0, 0, 8);
+
+    // curtain backdrop with real folds, so shadows drape over it
+    const curtainGeo = new THREE.PlaneGeometry(30, 16, 420, 1);
+    {
+      const p = curtainGeo.attributes.position;
+      for (let i = 0; i < p.count; i++) {
+        const x = p.getX(i);
+        p.setZ(i, Math.sin(x * 2.3) * 0.26 + Math.sin(x * 5.1 + 1.3) * 0.09 + Math.sin(x * 0.7) * 0.2);
+      }
+      curtainGeo.computeVertexNormals();
+    }
+    const curtainMat = new THREE.MeshStandardMaterial({ color: COLORS[0], roughness: .92, metalness: 0 });
+    const curtain = new THREE.Mesh(curtainGeo, curtainMat);
+    curtain.position.z = -2.4; curtain.receiveShadow = true;
+    scene.add(curtain);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 1.15));
+    const key = new THREE.DirectionalLight(0xffffff, 2.3);
+    key.position.set(-4, 3.5, 6);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    Object.assign(key.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 30 });
+    key.shadow.bias = -0.0006; key.shadow.radius = 7;
+    scene.add(key); scene.add(key.target);
+    const rim = new THREE.DirectionalLight(0xffffff, .7); rim.position.set(5, -2, 3); scene.add(rim);
+
+    const objMat = new THREE.MeshStandardMaterial({ color: COLORS[0], roughness: .55, metalness: 0 });
+    const mesh = (geo, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) => {
+      const m = new THREE.Mesh(geo, objMat); m.position.set(x, y, z); m.rotation.set(rx, ry, rz);
+      m.castShadow = true; m.receiveShadow = true; return m;
+    };
+    const group = (...kids) => { const g = new THREE.Group(); kids.forEach(k => g.add(k)); return g; };
+
+    // one small sculpture per panel
+    const lathe = pts => new THREE.LatheGeometry(pts.map(([x, y]) => new THREE.Vector2(x, y)), 64);
+    const sculptures = [
+      // hello: sphere with a halo
+      group(mesh(new THREE.SphereGeometry(.85, 64, 48)), mesh(new THREE.TorusGeometry(1.35, .06, 16, 120), 0, 0, 0, 1.2, .3, 0)),
+      // who: a little clay figure
+      group(
+        mesh(new THREE.SphereGeometry(.42, 48, 36), 0, .95, 0),
+        mesh(lathe([[0, -1.05], [.72, -1.05], [.78, -.9], [.62, -.2], [.4, .35], [.2, .55], [0, .58]]))
+      ),
+      // finance: rising bars
+      group(
+        mesh(new THREE.BoxGeometry(.5, .7, .5), -.75, -.65, 0),
+        mesh(new THREE.BoxGeometry(.5, 1.3, .5), 0, -.35, 0),
+        mesh(new THREE.BoxGeometry(.5, 2.0, .5), .75, 0, 0),
+        mesh(new THREE.SphereGeometry(.2, 32, 24), .75, 1.3, 0)
+      ),
+      // food: bowl + chopsticks
+      group(
+        mesh(lathe([[0, -.55], [.45, -.55], [.5, -.45], [1.05, .25], [1.1, .32], [1.02, .32], [.45, -.32], [0, -.36]])),
+        mesh(new THREE.SphereGeometry(.78, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2.6), 0, -.42, 0),
+        mesh(new THREE.CylinderGeometry(.035, .035, 2.4, 16), .35, .75, .1, 0, 0, -1.0),
+        mesh(new THREE.CylinderGeometry(.035, .035, 2.4, 16), .5, .6, -.15, 0, 0, -1.12)
+      ),
+      // json: stacked layers
+      group(
+        mesh(new THREE.BoxGeometry(1.7, .16, 1.7), 0, -.6, 0, 0, .2, 0),
+        mesh(new THREE.BoxGeometry(1.7, .16, 1.7), 0, 0, 0, 0, .55, 0),
+        mesh(new THREE.BoxGeometry(1.7, .16, 1.7), 0, .6, 0, 0, .9, 0)
+      ),
+      // url: two chain links
+      group(
+        mesh(new THREE.TorusGeometry(.62, .2, 32, 100), -.42, 0, 0, 0, .25, 0),
+        mesh(new THREE.TorusGeometry(.62, .2, 32, 100), .42, 0, 0, Math.PI / 2, 0, .25)
+      ),
+      // circus: a tent
+      group(
+        mesh(new THREE.CylinderGeometry(1.0, 1.0, .75, 64), 0, -.6, 0),
+        mesh(new THREE.ConeGeometry(1.25, 1.2, 64), 0, .37, 0),
+        mesh(new THREE.CylinderGeometry(.025, .025, .5, 12), 0, 1.2, 0),
+        mesh(new THREE.SphereGeometry(.1, 24, 16), 0, 1.47, 0)
+      ),
+      // contact: a knot
+      group(mesh(new THREE.TorusKnotGeometry(.72, .24, 220, 32))),
+    ];
+    const tilt = [[.2, 0], [.1, 0], [.25, .5], [.45, 0], [.45, 0], [.3, 0], [.2, 0], [0, 0]];
+    sculptures.forEach(s => { s.scale.setScalar(0.0001); scene.add(s); });
+
+    let visW = 1, visH = 1, anchor = new THREE.Vector3(), objScale = 1, mobile = false;
+    function layout() {
+      const w = innerWidth, h = innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      visH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      visW = visH * camera.aspect;
+      mobile = w < 760;
+      if (mobile) { anchor.set(0, visH * 0.2, 0); objScale = Math.min(.8, visW / 3.6); }
+      else { anchor.set(visW * 0.26, 0, 0); objScale = Math.min(1.15, visW / 7.5); }
+    }
+    addEventListener('resize', layout);
+    layout();
+
+    const pointer = new THREE.Vector2(), look = new THREE.Vector2();
+    addEventListener('pointermove', e => pointer.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1), { passive: true });
+
+    /* ───────── loop ───────── */
+    const clock = new THREE.Clock();
+    const col = new THREE.Color(), light = new THREE.Color(), white = new THREE.Color(0xffffff);
+    const count = document.getElementById('count'), bar = document.getElementById('bar');
+    const root = document.documentElement;
+    let p = 0, lastIdx = -1;
+    const ease = x => x * x * (3 - 2 * x);
+
+    function frame() {
+      requestAnimationFrame(frame);
+      const t = clock.getElapsedTime();
+      const raw = THREE.MathUtils.clamp(scrollY / innerHeight, 0, N - 1);
+      p += (raw - p) * (reduced ? 1 : 0.09);
+
+      // colour: blend between neighbouring panels
+      const i0 = Math.floor(p), i1 = Math.min(i0 + 1, N - 1), f = ease(THREE.MathUtils.clamp((p - i0 - 0.25) / 0.5, 0, 1));
+      col.copy(COLORS[i0]).lerp(COLORS[i1], f);
+      curtainMat.color.copy(col);
+      objMat.color.copy(light.copy(col).lerp(white, .14));
+      const idx = Math.round(p);
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        panels.forEach((el, i) => el.classList.toggle('on', i === idx));
+        count.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(N).padStart(2, '0');
+        root.style.setProperty('--accent', '#' + COLORS[idx].getHexString());
+      }
+      bar.style.transform = `scaleX(${(p / (N - 1)).toFixed(4)})`;
+
+      // light follows the pointer → shadows slide over the folds
+      look.lerp(pointer, .05);
+      key.position.set(-4 + look.x * 3.5, 3.5 + look.y * 2, 6);
+      camera.position.x = look.x * .18; camera.position.y = look.y * .12;
+      camera.lookAt(0, 0, 0);
+
+      sculptures.forEach((s, i) => {
+        const d = p - i, a = ease(THREE.MathUtils.clamp(1 - Math.abs(d) * 1.5, 0, 1));
+        s.visible = a > 0.001;
+        if (!s.visible) return;
+        s.scale.setScalar(Math.max(a, 0.0001) * objScale);
+        s.position.set(anchor.x, anchor.y - d * visH * 0.55 + (reduced ? 0 : Math.sin(t * .9 + i) * .07), anchor.z);
+        s.rotation.set(tilt[i][0] + look.y * -.25 + d * .6, tilt[i][1] + d * 2.4 + (reduced ? 0 : t * .35) + look.x * .4, d * .3);
+      });
+
+      renderer.render(scene, camera);
+    }
+    frame();
+  </script>
+</body>
+</html>
