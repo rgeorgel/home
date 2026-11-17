@@ -80,9 +80,10 @@
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: auto;
       grid-template-areas:
-        "hero portfolio portfolio"
-        "hero eat       json     "
-        "url  circus    circus   ";
+        "hero   causify   contratos"
+        "hero   portfolio portfolio"
+        "eat    json      url      "
+        "circus circus    circus   ";
       gap: 12px;
       width: 100%;
       max-width: 880px;
@@ -251,15 +252,23 @@
     }
     .card:hover::after { left: 150%; }
 
+    .c-causify   { grid-area: causify;   animation-delay:.03s; }
+    .c-contratos { grid-area: contratos; animation-delay:.05s; }
+    .c-causify:hover   { border-color:rgba(72,217,164,.45); box-shadow:0 0 40px rgba(72,217,164,.12); }
+    .c-causify .cat    { color:#48d9a4; }
+    .c-contratos:hover { border-color:rgba(72,176,241,.45); box-shadow:0 0 40px rgba(72,176,241,.12); }
+    .c-contratos .cat  { color:#48b0f1; }
+
     /* ── Responsive ── */
     @media (max-width: 660px) {
       .grid {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
-          "hero      hero  "
-          "portfolio eat   "
-          "json      url   "
-          "circus    circus";
+          "hero      hero     "
+          "causify   contratos"
+          "portfolio eat      "
+          "json      url      "
+          "circus    circus   ";
       }
       .c-hero { min-height: auto; }
       .c-circus { flex-direction: column; align-items: flex-start; }
@@ -268,7 +277,7 @@
       .grid {
         grid-template-columns: 1fr;
         grid-template-areas:
-          "hero" "portfolio" "eat" "json" "url" "circus";
+          "hero" "causify" "contratos" "portfolio" "eat" "json" "url" "circus";
       }
     }
   </style>
@@ -302,6 +311,24 @@
         </a>
       </div>
     </div>
+
+    <!-- Causify -->
+    <a class="card c-causify" href="https://causify.com.br/home-verde.html" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">⚖️</div>
+      <span class="cat">Legal</span>
+      <div class="card-name">Causify</div>
+      <p class="card-desc">Practice management for law firms — cases, deadlines, billing and a client portal.</p>
+    </a>
+
+    <!-- Contratos -->
+    <a class="card c-contratos" href="https://contratos-teste.georgel.ca" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">✍️</div>
+      <span class="cat">E-signature</span>
+      <div class="card-name">Contratos</div>
+      <p class="card-desc">From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.</p>
+    </a>
 
     <!-- Portfolio Balancer -->
     <a class="card c-portfolio" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">

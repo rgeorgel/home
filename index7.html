@@ -171,13 +171,31 @@
       <div class="inner">
         <div class="kicker rise r1">Who</div>
         <h2 data-split>I’m <em>Ricardo</em> Georgel.</h2>
-        <p class="lede rise r2">I build small, useful things for the web — and I ship them. Here are five.</p>
+        <p class="lede rise r2">I build small, useful things for the web — and I ship them. Here are seven.</p>
       </div>
     </section>
 
-    <section class="panel" id="work" data-color="#16824a">
+    <section class="panel" id="work" data-color="#0f6b4f">
       <div class="inner">
-        <div class="kicker rise r1">01 — Finance</div>
+        <div class="kicker rise r1">01 — Legal</div>
+        <h2 data-split><em>Causify</em></h2>
+        <p class="lede rise r2">Practice management for law firms — cases, deadlines, billing and a client portal.</p>
+        <a class="btn rise r3" href="https://causify.com.br/home-verde.html" target="_blank" rel="noopener">Open project <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#34406e">
+      <div class="inner">
+        <div class="kicker rise r1">02 — E-signature</div>
+        <h2 data-split><em>Contratos</em></h2>
+        <p class="lede rise r2">From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.</p>
+        <a class="btn rise r3" href="https://contratos-teste.georgel.ca" target="_blank" rel="noopener">Open project <i>↗</i></a>
+      </div>
+    </section>
+
+    <section class="panel" data-color="#a8740c">
+      <div class="inner">
+        <div class="kicker rise r1">03 — Finance</div>
         <h2 data-split>Portfolio <em>Balancer</em></h2>
         <p class="lede rise r2">Track and rebalance investments to stay aligned with your target allocation.</p>
         <a class="btn rise r3" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
@@ -186,7 +204,7 @@
 
     <section class="panel" data-color="#e8641a">
       <div class="inner">
-        <div class="kicker rise r1">02 — Food</div>
+        <div class="kicker rise r1">04 — Food</div>
         <h2 data-split>What to <em>Eat</em></h2>
         <p class="lede rise r2">Discover restaurants in Toronto &amp; Vancouver when you can’t decide.</p>
         <a class="btn rise r3" href="https://what-to-eat.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
@@ -195,7 +213,7 @@
 
     <section class="panel" data-color="#2646d8">
       <div class="inner">
-        <div class="kicker rise r1">03 — Tools</div>
+        <div class="kicker rise r1">05 — Tools</div>
         <h2 data-split><em>JSON</em> Formatter</h2>
         <p class="lede rise r2">Paste raw JSON — get it formatted and validated instantly.</p>
         <a class="btn rise r3" href="https://formatter.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
@@ -204,7 +222,7 @@
 
     <section class="panel" data-color="#0e8a8c">
       <div class="inner">
-        <div class="kicker rise r1">04 — Tools</div>
+        <div class="kicker rise r1">06 — Tools</div>
         <h2 data-split>URL <em>Shortener</em></h2>
         <p class="lede rise r2">Turn long URLs into clean, shareable links.</p>
         <a class="btn rise r3" href="https://url.georgel.ca/" target="_blank" rel="noopener">Open project <i>↗</i></a>
@@ -213,7 +231,7 @@
 
     <section class="panel" data-color="#8a2bd6">
       <div class="inner">
-        <div class="kicker rise r1">05 — Game</div>
+        <div class="kicker rise r1">07 — Game</div>
         <h2 data-split><em>Circus</em> Runner</h2>
         <p class="lede rise r2">A fast-paced browser game — dodge obstacles and run as far as you can.</p>
         <a class="btn rise r3" href="https://circus.georgel.ca/" target="_blank" rel="noopener">Play it <i>↗</i></a>
@@ -232,7 +250,7 @@
     </section>
   </main>
 
-  <div class="pill" aria-hidden="true"><span id="count">01 / 08</span><span class="bar"><b id="bar"></b></span><span>Scroll</span></div>
+  <div class="pill" aria-hidden="true"><span id="count">01 / 10</span><span class="bar"><b id="bar"></b></span><span>Scroll</span></div>
 
   <script type="module">
     import * as THREE from 'three';
@@ -318,6 +336,26 @@
         mesh(new THREE.SphereGeometry(.42, 48, 36), 0, .95, 0),
         mesh(lathe([[0, -1.05], [.72, -1.05], [.78, -.9], [.62, -.2], [.4, .35], [.2, .55], [0, .58]]))
       ),
+      // causify: scales of justice
+      group(
+        mesh(new THREE.CylinderGeometry(.5, .6, .15, 48), 0, -1.05, 0),
+        mesh(new THREE.CylinderGeometry(.06, .06, 2.0, 16), 0, -.05, 0),
+        mesh(new THREE.BoxGeometry(2.0, .08, .08), 0, .85, 0),
+        mesh(new THREE.SphereGeometry(.12, 24, 16), 0, 1.0, 0),
+        mesh(new THREE.CylinderGeometry(.02, .02, .6, 8), -.95, .55, 0),
+        mesh(new THREE.CylinderGeometry(.02, .02, .6, 8), .95, .55, 0),
+        mesh(new THREE.CylinderGeometry(.42, .28, .12, 48), -.95, .22, 0),
+        mesh(new THREE.CylinderGeometry(.42, .28, .12, 48), .95, .22, 0)
+      ),
+      // contratos: a signed sheet and a pen
+      group(
+        mesh(new THREE.BoxGeometry(1.4, 1.9, .06), 0, 0, 0, 0, 0, .08),
+        mesh(new THREE.BoxGeometry(.9, .05, .03), -.08, .5, .05, 0, 0, .08),
+        mesh(new THREE.BoxGeometry(.9, .05, .03), -.06, .25, .05, 0, 0, .08),
+        mesh(new THREE.BoxGeometry(.55, .05, .03), -.22, 0, .05, 0, 0, .08),
+        mesh(new THREE.CylinderGeometry(.07, .07, 1.3, 20), .75, -.5, .4, 0, 0, -.6),
+        mesh(new THREE.ConeGeometry(.07, .2, 20), .326, -1.119, .4, 0, 0, Math.PI - .6)
+      ),
       // finance: rising bars
       group(
         mesh(new THREE.BoxGeometry(.5, .7, .5), -.75, -.65, 0),
@@ -353,7 +391,7 @@
       // contact: a knot
       group(mesh(new THREE.TorusKnotGeometry(.72, .24, 220, 32))),
     ];
-    const tilt = [[.2, 0], [.1, 0], [.25, .5], [.45, 0], [.45, 0], [.3, 0], [.2, 0], [0, 0]];
+    const tilt = [[.2, 0], [.1, 0], [.15, 0], [.2, .35], [.25, .5], [.45, 0], [.45, 0], [.3, 0], [.2, 0], [0, 0]];
     sculptures.forEach(s => { s.scale.setScalar(0.0001); scene.add(s); });
 
     let visW = 1, visH = 1, anchor = new THREE.Vector3(), objScale = 1, mobile = false;

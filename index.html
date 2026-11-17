@@ -521,7 +521,7 @@
       uniforms.uGlobal.value = Math.max(intro, scroll * 1.05);
       uniforms.uFade.value = THREE.MathUtils.smoothstep(scroll, 0.55, 1.0);
 
-      const s = meshScale * 0.16 * (0.4 + holeAmt * 0.6);
+      const s = meshScale * 0.08 * (0.4 + holeAmt * 0.6);
       crystal.scale.setScalar(s);
       crystal.position.set(wx, wy, 0.5 + scroll * 2);
       crystal.rotation.set(t * 0.5, t * 0.7, t * 0.2);

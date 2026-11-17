@@ -73,9 +73,10 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-areas:
-        "hero portfolio portfolio"
-        "hero eat       json     "
-        "url  circus    circus   ";
+        "hero   causify   contratos"
+        "hero   portfolio portfolio"
+        "eat    json      url      "
+        "circus circus    circus   ";
       gap: 10px;
       width: 100%;
       max-width: 880px;
@@ -341,15 +342,20 @@
     .c-circus .card-icon { font-size: 2.4rem; margin-bottom: 0; padding-bottom: 0; flex-shrink: 0; }
     .c-circus .card-body { flex: 1; }
 
+    .c-causify   { grid-area: causify;   animation-delay: .02s; --neon: #00ff88; }
+    .c-contratos { grid-area: contratos; animation-delay: .04s; --neon: #4d8dff; }
+    .c-causify .cat, .c-contratos .cat { color: var(--neon); }
+
     /* ── Responsive ── */
     @media (max-width: 660px) {
       .grid {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
-          "hero      hero  "
-          "portfolio eat   "
-          "json      url   "
-          "circus    circus";
+          "hero      hero     "
+          "causify   contratos"
+          "portfolio eat      "
+          "json      url      "
+          "circus    circus   ";
       }
       .c-hero { min-height: auto; }
       .c-circus { flex-direction: column; align-items: flex-start; }
@@ -358,7 +364,7 @@
       .grid {
         grid-template-columns: 1fr;
         grid-template-areas:
-          "hero" "portfolio" "eat" "json" "url" "circus";
+          "hero" "causify" "contratos" "portfolio" "eat" "json" "url" "circus";
       }
     }
 
@@ -569,6 +575,24 @@
         </a>
       </div>
     </div>
+
+    <!-- Causify -->
+    <a class="card c-causify" href="https://causify.com.br/home-verde.html" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">⚖️</div>
+      <span class="cat">Legal</span>
+      <div class="card-name">Causify</div>
+      <p class="card-desc">Practice management for law firms — cases, deadlines, billing and a client portal.</p>
+    </a>
+
+    <!-- Contratos -->
+    <a class="card c-contratos" href="https://contratos-teste.georgel.ca" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">✍️</div>
+      <span class="cat">E-signature</span>
+      <div class="card-name">Contratos</div>
+      <p class="card-desc">From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.</p>
+    </a>
 
     <!-- Portfolio Balancer -->
     <a class="card c-portfolio" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">
@@ -812,14 +836,14 @@
       termPrompt.addEventListener(ev, () => clearTimeout(holdT))
     );
 
-    // 7. Hover all 5 cards → achievement toast
+    // 7. Hover all 7 cards → achievement toast
     const hoveredSet = new Set();
     let achShown = false;
     document.querySelectorAll('a.card').forEach(card => {
       card.addEventListener('mouseenter', () => {
         const key = [...card.classList].find(c => c.startsWith('c-'));
         if (key) hoveredSet.add(key);
-        if (hoveredSet.size >= 5 && !achShown) {
+        if (hoveredSet.size >= 7 && !achShown) {
           achShown = true;
           const el = document.getElementById('achievement');
           el.classList.add('show');

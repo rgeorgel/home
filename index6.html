@@ -162,6 +162,8 @@
   <!-- Plain links for screen readers / no-JS -->
   <nav class="sr" aria-label="Projects">
     <h1>Ricardo Georgel</h1>
+    <a href="https://causify.com.br/home-verde.html">Causify</a>
+    <a href="https://contratos-teste.georgel.ca">Contratos</a>
     <a href="https://portfolio-balance.georgel.ca/">Portfolio Balancer</a>
     <a href="https://what-to-eat.georgel.ca/">What to Eat</a>
     <a href="https://formatter.georgel.ca/">JSON Formatter</a>
@@ -176,13 +178,15 @@
 
     const CARDS = [
       { intro: true, title: 'Ricardo\nGeorgel', cat: 'Hello, I’m', desc: 'I build small, useful things for the web. Drag, scroll or use ← → to look around.', emoji: '👋', a: '#5a4dff', b: '#2a1fd6', ink: '#fff' },
+      { title: 'Causify', cat: 'Legal', desc: 'Practice management for law firms — cases, deadlines, billing and a client portal.', emoji: '⚖️', href: 'https://causify.com.br/home-verde.html', a: '#2fbf7a', b: '#0f6b4f', ink: '#fff' },
+      { title: 'Contratos', cat: 'E-signature', desc: 'From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.', emoji: '✍️', href: 'https://contratos-teste.georgel.ca', a: '#4d8dff', b: '#1d3fae', ink: '#fff' },
       { title: 'Portfolio\nBalancer', cat: 'Finance', desc: 'Track and rebalance investments to stay aligned with your target allocation.', emoji: '📈', href: 'https://portfolio-balance.georgel.ca/', a: '#12c9a0', b: '#00806a', ink: '#fff' },
       { title: 'What\nto Eat', cat: 'Food', desc: 'Discover restaurants in Toronto & Vancouver when you can’t decide.', emoji: '🍜', href: 'https://what-to-eat.georgel.ca/', a: '#ff8a4d', b: '#e2452b', ink: '#fff' },
       { title: 'JSON\nFormatter', cat: 'Tools', desc: 'Paste raw JSON — get it formatted and validated instantly.', emoji: '🗂️', href: 'https://formatter.georgel.ca/', a: '#a07bff', b: '#5a2bd6', ink: '#fff' },
       { title: 'URL\nShortener', cat: 'Tools', desc: 'Turn long URLs into clean, shareable links.', emoji: '🔗', href: 'https://url.georgel.ca/', a: '#ffd23d', b: '#ffa200', ink: '#2a1a00' },
       { title: 'Circus\nRunner', cat: 'Game', desc: 'A fast-paced browser game — dodge obstacles and run as far as you can.', emoji: '🎪', href: 'https://circus.georgel.ca/', a: '#ff6aa8', b: '#d81f6a', ink: '#fff' },
     ];
-    const N = CARDS.length, STEP = (Math.PI * 2) / N, ARC = THREE.MathUtils.degToRad(52), R = 5;
+    const N = CARDS.length, STEP = (Math.PI * 2) / N, ARC = Math.min(THREE.MathUtils.degToRad(52), STEP * 0.87), R = 5;
 
     /* ───────── card artwork (canvas → texture) ───────── */
     const FONT = '"Bricolage Grotesque", system-ui, sans-serif';

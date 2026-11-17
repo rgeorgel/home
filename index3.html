@@ -121,9 +121,10 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-areas:
-        "hero portfolio portfolio"
-        "hero eat       json     "
-        "url  circus    circus   ";
+        "hero   causify   contratos"
+        "hero   portfolio portfolio"
+        "eat    json      url      "
+        "circus circus    circus   ";
       gap: 10px;
       width: 100%;
       max-width: 880px;
@@ -328,15 +329,21 @@
     .c-circus .card-icon  { font-size: 2.8rem; margin-bottom: 0; padding-bottom: 0; flex-shrink: 0; }
     .c-circus .card-body  { flex: 1; }
 
+    .c-causify   { grid-area: causify;   --neon: #00ff88; animation-delay: .03s; }
+    .c-contratos { grid-area: contratos; --neon: #4d8dff; animation-delay: .05s; }
+    .c-causify:hover   { border-color: rgba(0,255,136,.35); box-shadow: 0 0 55px rgba(0,255,136,.11), inset 0 0 30px rgba(0,255,136,.03); }
+    .c-contratos:hover { border-color: rgba(77,141,255,.35); box-shadow: 0 0 55px rgba(77,141,255,.11), inset 0 0 30px rgba(77,141,255,.03); }
+
     /* ── Responsive ── */
     @media (max-width: 660px) {
       .bento {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
-          "hero      hero  "
-          "portfolio eat   "
-          "json      url   "
-          "circus    circus";
+          "hero      hero     "
+          "causify   contratos"
+          "portfolio eat      "
+          "json      url      "
+          "circus    circus   ";
       }
       .c-hero   { min-height: auto; }
       .c-circus { flex-direction: column; align-items: flex-start; }
@@ -344,7 +351,8 @@
     @media (max-width: 400px) {
       .bento {
         grid-template-columns: 1fr;
-        grid-template-areas: "hero" "portfolio" "eat" "json" "url" "circus";
+        grid-template-areas:
+          "hero" "causify" "contratos" "portfolio" "eat" "json" "url" "circus";
       }
     }
     @media (pointer: coarse) {
@@ -391,6 +399,26 @@
         </a>
       </div>
     </div>
+
+    <!-- Causify -->
+    <a class="card c-causify" href="https://causify.com.br/home-verde.html" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <div class="card-icon">⚖️</div>
+      <span class="cat">Legal</span>
+      <div class="card-name">Causify</div>
+      <p class="card-desc">Practice management for law firms — cases, deadlines, billing and a client portal.</p>
+    </a>
+
+    <!-- Contratos -->
+    <a class="card c-contratos" href="https://contratos-teste.georgel.ca" target="_blank" rel="noopener">
+      <div class="shine"></div>
+      <span class="arrow">↗</span>
+      <div class="card-icon">✍️</div>
+      <span class="cat">E-signature</span>
+      <div class="card-name">Contratos</div>
+      <p class="card-desc">From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.</p>
+    </a>
 
     <!-- Portfolio Balancer -->
     <a class="card c-portfolio" href="https://portfolio-balance.georgel.ca/" target="_blank" rel="noopener">
