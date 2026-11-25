@@ -16,7 +16,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="i18n.js"></script>
   <script src="projects/data.js"></script>
+  <script src="projects/data.pt.js"></script>
+  <script src="projects/data.es.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -64,6 +67,10 @@
       transition: transform .4s var(--ease);
     }
     nav ul a:hover::after { transform: scaleX(1); transform-origin: left; }
+    nav .langs { display: flex; gap: .55rem; padding-left: 1.6rem; border-left: 1px solid currentColor; }
+    nav .langs a { opacity: .45; transition: opacity .3s; padding: 0; }
+    nav .langs a:hover, nav .langs a[aria-current] { opacity: 1; }
+    nav .langs a:not([aria-current])::after { display: none; }
 
     .label {
       font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
@@ -302,8 +309,9 @@
   <nav>
     <a class="mark" href="index.html">RG</a>
     <ul>
-      <li><a href="index.html#work">← All work</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#work" data-i18n="nav.allWork">← All work</a></li>
+      <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
+      <li class="langs" id="langs"></li>
     </ul>
   </nav>
 
@@ -321,25 +329,25 @@
       <div class="tile fade-up d3" id="tile" aria-hidden="true"></div>
     </header>
 
-    <section class="gallery" id="gallery" aria-label="Screenshots"></section>
+    <section class="gallery" id="gallery" aria-label="Screenshots" data-i18n-aria="project.shots"></section>
 
     <section class="about">
       <div class="desc">
-        <div class="label">About the project</div>
+        <div class="label" data-i18n="project.about">About the project</div>
         <div id="desc"></div>
       </div>
       <aside>
         <dl class="facts" id="facts"></dl>
-        <div class="label">Highlights</div>
+        <div class="label" data-i18n="project.highlights">Highlights</div>
         <ul class="features" id="features" style="margin-top:1.4rem"></ul>
         <div class="actions" style="margin-top:2.6rem">
-          <a class="btn" id="visit2" target="_blank" rel="noopener"><span>Open the project</span><span class="arr">↗</span></a>
+          <a class="btn" id="visit2" target="_blank" rel="noopener"><span data-i18n="project.open">Open the project</span><span class="arr">↗</span></a>
         </div>
       </aside>
     </section>
 
     <a class="next" id="next">
-      <div class="label">Next project</div>
+      <div class="label" data-i18n="project.next">Next project</div>
       <strong><span id="next-name"></span><em id="next-emoji"></em></strong>
     </a>
   </main>
@@ -349,15 +357,15 @@
     <nav>
       <a href="https://www.linkedin.com/in/rgeorgel/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://www.instagram.com/rgeorgel/" target="_blank" rel="noopener">Instagram</a>
-      <a href="index.html#work">All work</a>
+      <a href="index.html#work" data-i18n="project.allWork">All work</a>
     </nav>
   </footer>
 
-  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot viewer" data-i18n-aria="project.viewer">
     <img id="lb-img" alt="">
-    <button class="prev" aria-label="Previous screenshot">←</button>
-    <button class="next-shot" aria-label="Next screenshot">→</button>
-    <button class="close" aria-label="Close">✕</button>
+    <button class="prev" aria-label="Previous screenshot" data-i18n-aria="project.prev">←</button>
+    <button class="next-shot" aria-label="Next screenshot" data-i18n-aria="project.nextShot">→</button>
+    <button class="close" aria-label="Close" data-i18n-aria="project.close">✕</button>
     <div class="count" id="lb-count"></div>
   </div>
 
@@ -366,7 +374,9 @@
     const slug = new URLSearchParams(location.search).get('p');
     const idx = list.findIndex(p => p.slug === slug);
     if (idx < 0) location.replace('index.html#work');
-    const p = list[Math.max(idx, 0)];
+    const p = I18N.project(list[Math.max(idx, 0)]);
+    I18N.apply();
+    I18N.switcher(document.getElementById('langs'));
     const $ = id => document.getElementById(id);
     const el = (tag, props = {}, ...kids) => { const n = Object.assign(document.createElement(tag), props); n.append(...kids); return n; };
 
@@ -388,7 +398,7 @@
     $('name').textContent = p.name;
     $('tagline').textContent = p.tagline;
     $('tile').textContent = p.emoji;
-    $('visit-label').textContent = `Visit ${p.name}`;
+    $('visit-label').textContent = I18N.t('project.visit', { name: p.name });
     $('host').textContent = host;
     $('visit').href = $('visit2').href = p.url;
     $('yr').textContent = new Date().getFullYear();
@@ -449,7 +459,7 @@
       if (e.key === 'ArrowRight') show(cur + 1);
     });
 
-    gtag('event', 'view_project', { project: p.slug });
+    gtag('event', 'view_project', { project: p.slug, language: I18N.lang });
     ['visit', 'visit2'].forEach(id => $(id).addEventListener('click', () => gtag('event', 'visit_project', { project: p.slug })));
   </script>
 </body>

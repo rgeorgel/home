@@ -16,6 +16,10 @@
     const v = new URLSearchParams(location.search).get('v');
     if (['1', '2', '3', '4', '6', '7'].includes(v)) location.replace('index' + v + '.html');
   </script>
+  <script src="i18n.js"></script>
+  <script src="projects/data.js"></script>
+  <script src="projects/data.pt.js"></script>
+  <script src="projects/data.es.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -73,12 +77,16 @@
       transition: transform .4s cubic-bezier(.7,0,.2,1);
     }
     nav ul a:hover::after { transform: scaleX(1); transform-origin: left; }
+    nav .langs { display: flex; gap: .55rem; padding-left: 1.6rem; border-left: 1px solid currentColor; }
+    nav .langs a { opacity: .45; transition: opacity .3s; padding: 0; }
+    nav .langs a:hover, nav .langs a[aria-current] { opacity: 1; }
+    nav .langs a:not([aria-current])::after { display: none; }
 
     /* ── Hero ── */
     .hero {
       position: relative; z-index: 1;
       height: 100vh; height: 100svh;
-      display: flex; align-items: flex-end; justify-content: space-between;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem;
       padding: clamp(1.2rem, 4vw, 3rem);
       pointer-events: none;
     }
@@ -91,6 +99,7 @@
       display: flex; align-items: center; gap: .7rem;
       font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
       color: var(--muted);
+      white-space: nowrap;
     }
     .hero .hint i {
       display: block; width: 1px; height: 46px; background: var(--line);
@@ -233,62 +242,63 @@
   <nav>
     <a class="mark" href="#top">RG</a>
     <ul>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#work" data-i18n="nav.work">Work</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+      <li class="langs" id="langs"></li>
     </ul>
   </nav>
 
   <header class="hero" id="top">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Ricardo Georgel</h1>
-    <p class="fade-up d1">Small, sharp tools for the web. Designed, built and shipped by Ricardo Georgel.</p>
-    <div class="hint fade-up d2"><span>Move · Scroll</span><i></i></div>
+    <p class="fade-up d1" data-i18n="home.hero">Small, sharp tools for the web. Designed, built and shipped by Ricardo Georgel.</p>
+    <div class="hint fade-up d2"><span data-i18n="home.hint">Move · Scroll</span><i></i></div>
   </header>
 
   <main>
     <section class="sheet about">
-      <div class="label">Profile</div>
-      <p class="statement" id="statement">I like breaking big ideas into small things that just work. Eight of them live below.</p>
+      <div class="label" data-i18n="home.profile">Profile</div>
+      <p class="statement" id="statement" data-i18n="home.statement">I like breaking big ideas into small things that just work. Eight of them live below.</p>
     </section>
 
     <section class="sheet work" id="work">
-      <div class="label">Selected work</div>
+      <div class="label" data-i18n="home.selected">Selected work</div>
 
-      <a class="row" href="project.html?p=causify" data-emoji="⚖️" data-color="#1fa868">
+      <a class="row" href="project.html?p=causify" data-slug="causify" data-emoji="⚖️" data-color="#1fa868">
         <span class="n">01</span><h3>Causify</h3>
         <span class="meta"><b>Legal</b>Practice management for law firms, with cases, deadlines, timesheets, billing and a client portal.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=contratos" data-emoji="✍️" data-color="#2f6bff">
+      <a class="row" href="project.html?p=contratos" data-slug="contratos" data-emoji="✍️" data-color="#2f6bff">
         <span class="n">02</span><h3>Contratos</h3>
         <span class="meta"><b>E-signature</b>From template to signed PDF. Send contracts by e-mail, WhatsApp or SMS and track every signer.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=educa-game" data-emoji="🧭" data-color="#0aa5a5">
+      <a class="row" href="project.html?p=educa-game" data-slug="educa-game" data-emoji="🧭" data-color="#0aa5a5">
         <span class="n">03</span><h3>Educa Game</h3>
         <span class="meta"><b>Education</b>A free math and logic game for kids that adapts to each child's level.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=portfolio-balancer" data-emoji="📈" data-color="#7a3cff">
+      <a class="row" href="project.html?p=portfolio-balancer" data-slug="portfolio-balancer" data-emoji="📈" data-color="#7a3cff">
         <span class="n">04</span><h3>Portfolio Balancer</h3>
         <span class="meta"><b>Finance</b>Track and rebalance investments to stay aligned with your target allocation.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=what-to-eat" data-emoji="🍜" data-color="#ff5a36">
+      <a class="row" href="project.html?p=what-to-eat" data-slug="what-to-eat" data-emoji="🍜" data-color="#ff5a36">
         <span class="n">05</span><h3>What to Eat</h3>
         <span class="meta"><b>Food</b>Discover restaurants in Toronto &amp; Vancouver when you can't decide.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=json-formatter" data-emoji="🗂️" data-color="#00c389">
+      <a class="row" href="project.html?p=json-formatter" data-slug="json-formatter" data-emoji="🗂️" data-color="#00c389">
         <span class="n">06</span><h3>JSON Formatter</h3>
         <span class="meta"><b>Tools</b>Paste raw JSON and get it formatted and validated instantly.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=url-shortener" data-emoji="🔗" data-color="#ffc400">
+      <a class="row" href="project.html?p=url-shortener" data-slug="url-shortener" data-emoji="🔗" data-color="#ffc400">
         <span class="n">07</span><h3>URL Shortener</h3>
         <span class="meta"><b>Tools</b>Turn long URLs into clean, shareable links.</span>
         <span class="go">→</span>
       </a>
-      <a class="row" href="project.html?p=circus-runner" data-emoji="🎪" data-color="#ff3d8b">
+      <a class="row" href="project.html?p=circus-runner" data-slug="circus-runner" data-emoji="🎪" data-color="#ff3d8b">
         <span class="n">08</span><h3>Circus Runner</h3>
         <span class="meta"><b>Game</b>A fast-paced browser game. Dodge obstacles and run as far as you can.</span>
         <span class="go">→</span>
@@ -297,15 +307,28 @@
   </main>
 
   <footer id="contact">
-    <div class="label">Say hello</div>
+    <div class="label" data-i18n="home.sayHello">Say hello</div>
     <div class="big">
       <a href="https://www.linkedin.com/in/rgeorgel/" target="_blank" rel="noopener" data-split>LinkedIn</a>
       <a href="https://www.instagram.com/rgeorgel/" target="_blank" rel="noopener" data-split>Instagram</a>
     </div>
-    <div class="foot"><span>© <span id="yr"></span> Ricardo Georgel</span><a href="#top">Back to top ↑</a></div>
+    <div class="foot"><span>© <span id="yr"></span> Ricardo Georgel</span><a href="#top" data-i18n="home.top">Back to top ↑</a></div>
   </footer>
 
   <div id="peek" aria-hidden="true"></div>
+
+  <script>
+    // translate static text and project rows before the module script splits the statement into words
+    I18N.apply();
+    I18N.switcher(document.getElementById('langs'));
+    if (I18N.lang !== 'en') document.querySelectorAll('.row[data-slug]').forEach(row => {
+      const p = (window.PROJECTS || []).find(x => x.slug === row.dataset.slug);
+      if (!p) return;
+      const t = I18N.project(p), meta = row.querySelector('.meta'), b = document.createElement('b');
+      b.textContent = t.category;
+      meta.replaceChildren(b, t.tagline);
+    });
+  </script>
 
   <script type="module">
     import * as THREE from 'three';
