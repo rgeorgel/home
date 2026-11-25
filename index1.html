@@ -75,8 +75,8 @@
       grid-template-areas:
         "hero   causify   contratos"
         "hero   portfolio portfolio"
-        "eat    json      url      "
-        "circus circus    circus   ";
+        "educa  eat       json     "
+        "url    circus    circus   ";
       gap: 10px;
       width: 100%;
       max-width: 880px;
@@ -344,7 +344,8 @@
 
     .c-causify   { grid-area: causify;   animation-delay: .02s; --neon: #00ff88; }
     .c-contratos { grid-area: contratos; animation-delay: .04s; --neon: #4d8dff; }
-    .c-causify .cat, .c-contratos .cat { color: var(--neon); }
+    .c-educa     { grid-area: educa;     animation-delay: .05s; --neon: #00e0d0; }
+    .c-causify .cat, .c-contratos .cat, .c-educa .cat { color: var(--neon); }
 
     /* ── Responsive ── */
     @media (max-width: 660px) {
@@ -353,9 +354,9 @@
         grid-template-areas:
           "hero      hero     "
           "causify   contratos"
-          "portfolio eat      "
-          "json      url      "
-          "circus    circus   ";
+          "educa     portfolio"
+          "eat       json     "
+          "url       circus   ";
       }
       .c-hero { min-height: auto; }
       .c-circus { flex-direction: column; align-items: flex-start; }
@@ -364,7 +365,7 @@
       .grid {
         grid-template-columns: 1fr;
         grid-template-areas:
-          "hero" "causify" "contratos" "portfolio" "eat" "json" "url" "circus";
+          "hero" "causify" "contratos" "educa" "portfolio" "eat" "json" "url" "circus";
       }
     }
 
@@ -542,11 +543,11 @@
   <div id="sudo-popup"></div>
   <div id="achievement">
     <div class="ach-tag">🏆 Achievement Unlocked</div>
-    <div class="ach-text">Explorer — hovered all projects</div>
+    <div class="ach-text">Explorer: hovered all projects</div>
   </div>
   <div id="idle-screen">
     <div class="idle-main">SYSTEM IDLE</div>
-    <div class="idle-sub">— PRESS ANY KEY TO CONTINUE —</div>
+    <div class="idle-sub">PRESS ANY KEY TO CONTINUE</div>
   </div>
 
   <main class="grid">
@@ -582,16 +583,25 @@
       <div class="card-icon">⚖️</div>
       <span class="cat">Legal</span>
       <div class="card-name">Causify</div>
-      <p class="card-desc">Practice management for law firms — cases, deadlines, billing and a client portal.</p>
+      <p class="card-desc">Practice management for law firms, with cases, deadlines, billing and a client portal.</p>
     </a>
 
     <!-- Contratos -->
-    <a class="card c-contratos" href="https://contratos-teste.georgel.ca" target="_blank" rel="noopener">
+    <a class="card c-contratos" href="https://contratos.georgel.ca" target="_blank" rel="noopener">
       <span class="arrow">↗</span>
       <div class="card-icon">✍️</div>
       <span class="cat">E-signature</span>
       <div class="card-name">Contratos</div>
-      <p class="card-desc">From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.</p>
+      <p class="card-desc">From template to signed PDF. Send contracts by e-mail, WhatsApp or SMS.</p>
+    </a>
+
+    <!-- Educa Game -->
+    <a class="card c-educa" href="https://educa-game.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">🧭</div>
+      <span class="cat">Education</span>
+      <div class="card-name">Educa Game</div>
+      <p class="card-desc">Free math and logic game for kids that adapts to each child’s level.</p>
     </a>
 
     <!-- Portfolio Balancer -->
@@ -618,7 +628,7 @@
       <div class="card-icon">🗂️</div>
       <span class="cat">Tools</span>
       <div class="card-name">JSON Formatter</div>
-      <p class="card-desc">Paste raw JSON — get it formatted and validated instantly.</p>
+      <p class="card-desc">Paste raw JSON and get it formatted and validated instantly.</p>
     </a>
 
     <!-- URL Shortener -->
@@ -637,7 +647,7 @@
       <div class="card-body">
         <span class="cat">Game</span>
         <div class="card-name">Circus Runner</div>
-        <p class="card-desc">A fast-paced browser game — dodge obstacles and run as far as you can.</p>
+        <p class="card-desc">A fast-paced browser game. Dodge obstacles and run as far as you can.</p>
       </div>
     </a>
 
@@ -754,10 +764,10 @@
 
     // Sudo popup
     const SUDO_MSGS = [
-      'sudo: Permission denied — nice try ツ',
+      'sudo: Permission denied. Nice try ツ',
       'sudo: you are not in the sudoers file.',
       'sudo: access level INSUFFICIENT',
-      '[sudo] password for visitor: ******* — nope',
+      '[sudo] password for visitor: *******... nope',
     ];
     function showSudo() {
       const el = document.getElementById('sudo-popup');
@@ -772,7 +782,7 @@
       setTimeout(() => document.body.classList.remove('glitch-storm'), 2000);
     }
 
-    // 4. Click burst — neon particles at cursor
+    // 4. Click burst: neon particles at cursor
     document.addEventListener('click', e => {
       if (e.target.closest('#matrix-cvs,#idle-screen')) return;
       const wrap  = document.createElement('div');
@@ -836,14 +846,14 @@
       termPrompt.addEventListener(ev, () => clearTimeout(holdT))
     );
 
-    // 7. Hover all 7 cards → achievement toast
+    // 7. Hover all 8 cards → achievement toast
     const hoveredSet = new Set();
     let achShown = false;
     document.querySelectorAll('a.card').forEach(card => {
       card.addEventListener('mouseenter', () => {
         const key = [...card.classList].find(c => c.startsWith('c-'));
         if (key) hoveredSet.add(key);
-        if (hoveredSet.size >= 7 && !achShown) {
+        if (hoveredSet.size >= 8 && !achShown) {
           achShown = true;
           const el = document.getElementById('achievement');
           el.classList.add('show');

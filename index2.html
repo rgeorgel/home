@@ -82,8 +82,8 @@
       grid-template-areas:
         "hero   causify   contratos"
         "hero   portfolio portfolio"
-        "eat    json      url      "
-        "circus circus    circus   ";
+        "educa  eat       json     "
+        "url    circus    circus   ";
       gap: 12px;
       width: 100%;
       max-width: 880px;
@@ -258,6 +258,9 @@
     .c-causify .cat    { color:#48d9a4; }
     .c-contratos:hover { border-color:rgba(72,176,241,.45); box-shadow:0 0 40px rgba(72,176,241,.12); }
     .c-contratos .cat  { color:#48b0f1; }
+    .c-educa     { grid-area: educa;     animation-delay:.06s; }
+    .c-educa:hover     { border-color:rgba(45,212,191,.45); box-shadow:0 0 40px rgba(45,212,191,.12); }
+    .c-educa .cat      { color:#2dd4bf; }
 
     /* ── Responsive ── */
     @media (max-width: 660px) {
@@ -266,9 +269,9 @@
         grid-template-areas:
           "hero      hero     "
           "causify   contratos"
-          "portfolio eat      "
-          "json      url      "
-          "circus    circus   ";
+          "educa     portfolio"
+          "eat       json     "
+          "url       circus   ";
       }
       .c-hero { min-height: auto; }
       .c-circus { flex-direction: column; align-items: flex-start; }
@@ -277,7 +280,7 @@
       .grid {
         grid-template-columns: 1fr;
         grid-template-areas:
-          "hero" "causify" "contratos" "portfolio" "eat" "json" "url" "circus";
+          "hero" "causify" "contratos" "educa" "portfolio" "eat" "json" "url" "circus";
       }
     }
   </style>
@@ -318,16 +321,25 @@
       <div class="card-icon">⚖️</div>
       <span class="cat">Legal</span>
       <div class="card-name">Causify</div>
-      <p class="card-desc">Practice management for law firms — cases, deadlines, billing and a client portal.</p>
+      <p class="card-desc">Practice management for law firms, with cases, deadlines, billing and a client portal.</p>
     </a>
 
     <!-- Contratos -->
-    <a class="card c-contratos" href="https://contratos-teste.georgel.ca" target="_blank" rel="noopener">
+    <a class="card c-contratos" href="https://contratos.georgel.ca" target="_blank" rel="noopener">
       <span class="arrow">↗</span>
       <div class="card-icon">✍️</div>
       <span class="cat">E-signature</span>
       <div class="card-name">Contratos</div>
-      <p class="card-desc">From template to signed PDF — send contracts by e-mail, WhatsApp or SMS.</p>
+      <p class="card-desc">From template to signed PDF. Send contracts by e-mail, WhatsApp or SMS.</p>
+    </a>
+
+    <!-- Educa Game -->
+    <a class="card c-educa" href="https://educa-game.georgel.ca/" target="_blank" rel="noopener">
+      <span class="arrow">↗</span>
+      <div class="card-icon">🧭</div>
+      <span class="cat">Education</span>
+      <div class="card-name">Educa Game</div>
+      <p class="card-desc">Free math and logic game for kids that adapts to each child’s level.</p>
     </a>
 
     <!-- Portfolio Balancer -->
@@ -354,7 +366,7 @@
       <div class="card-icon">🗂️</div>
       <span class="cat">Tools</span>
       <div class="card-name">JSON Formatter</div>
-      <p class="card-desc">Paste raw JSON — get it formatted and validated instantly.</p>
+      <p class="card-desc">Paste raw JSON and get it formatted and validated instantly.</p>
     </a>
 
     <!-- URL Shortener -->
@@ -373,7 +385,7 @@
       <div class="card-body">
         <span class="cat">Game</span>
         <div class="card-name">Circus Runner</div>
-        <p class="card-desc">A fast-paced browser game — dodge obstacles and run as far as you can.</p>
+        <p class="card-desc">A fast-paced browser game. Dodge obstacles and run as far as you can.</p>
       </div>
     </a>
 

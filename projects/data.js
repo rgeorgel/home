@@ -9,7 +9,7 @@ window.PROJECTS = [
     emoji: '⚖️',
     color: '#1fa868',
     url: 'https://causify.com.br/home-verde.html',
-    tagline: 'Practice management for law firms — cases, deadlines, timesheets, billing and a client portal.',
+    tagline: 'Practice management for law firms, with cases, deadlines, timesheets, billing and a client portal.',
     description: [
       'Causify is an all-in-one practice management platform for Brazilian law firms. Cases, deadlines, clients, tasks and finances live in a single web app, so a firm can run its day-to-day without juggling spreadsheets and calendars.',
       'It handles the details that matter to lawyers in Brazil: deadlines counted in business days with national holidays and court recesses, fee calculators based on the OAB tables, and calculators for alimony, labour, FGTS, rent and banking cases using Central Bank indices.',
@@ -35,10 +35,10 @@ window.PROJECTS = [
     category: 'E-signature',
     emoji: '✍️',
     color: '#2f6bff',
-    url: 'https://contratos-teste.georgel.ca',
-    tagline: 'From template to signed PDF — send contracts by e-mail, WhatsApp or SMS and track every signer.',
+    url: 'https://contratos.georgel.ca',
+    tagline: 'From template to signed PDF. Send contracts by e-mail, WhatsApp or SMS and track every signer.',
     description: [
-      'Contratos takes a contract from template to signed PDF. Teams write a template once, mark what changes with typed variables — text, date, currency, CPF/CNPJ — and generate a ready-to-sign document from a validated form in minutes.',
+      'Contratos takes a contract from template to signed PDF. Teams write a template once, mark what changes with typed variables (text, date, currency, CPF/CNPJ) and generate a ready-to-sign document from a validated form in minutes.',
       'Signers get a link by e-mail, WhatsApp or SMS and don’t need an account. The dashboard shows who opened, signed or declined, and highlights contracts that have stalled. Once everyone signs, the PDF is filed with the contract’s full history.',
     ],
     features: [
@@ -54,6 +54,33 @@ window.PROJECTS = [
       { src: 'contratos-1.webp', alt: 'Contratos landing page with a contract being signed' },
       { src: 'contratos-2.webp', alt: 'Contratos four-step flow and status tracking' },
       { src: 'contratos-m.webp', alt: 'Contratos on mobile', mobile: true },
+    ],
+  },
+  {
+    slug: 'educa-game',
+    name: 'Educa Game',
+    category: 'Education',
+    emoji: '🧭',
+    color: '#0aa5a5',
+    url: 'https://educa-game.georgel.ca/',
+    tagline: 'A free math and logic game for kids that adapts to each child’s level.',
+    description: [
+      'Educa Game turns math and logic practice into an expedition. Short challenges adapt to each child’s level, going from the first “what’s 3 + 4?” to equations and logic puzzles. There are two tracks and four levels, from Beginner to Expert.',
+      'There’s no rush and no lives to lose: a wrong answer becomes a hint and a similar problem to try again. Progress unlocks new regions of the map, and parents and teachers can follow each child’s week and see what needs more practice.',
+    ],
+    features: [
+      'Difficulty that adapts to each skill',
+      'Mistakes turn into explanations',
+      'Daily challenge with double XP',
+      'Medals and an unlockable avatar',
+      'Read-aloud, large text and dark mode',
+      'Parent dashboard and classroom codes',
+    ],
+    facts: [['Market', 'Brazil'], ['Ages', '7 to 99'], ['Pricing', 'Free, no ads, no sign-up']],
+    shots: [
+      { src: 'educa-game-1.webp', alt: 'Educa Game landing page with a multiplication challenge' },
+      { src: 'educa-game-2.webp', alt: 'Educa Game levels from Beginner to Expert' },
+      { src: 'educa-game-m.webp', alt: 'Educa Game on mobile', mobile: true },
     ],
   },
   {
@@ -113,9 +140,9 @@ window.PROJECTS = [
     emoji: '🗂️',
     color: '#00c389',
     url: 'https://formatter.georgel.ca/',
-    tagline: 'Paste raw JSON — get it formatted and validated instantly.',
+    tagline: 'Paste raw JSON and get it formatted and validated instantly.',
     description: [
-      'A no-nonsense JSON formatter and validator. Paste anything, and it tells you whether it’s valid — with a useful error message when it isn’t — or pretty-prints it with proper indentation and highlighting.',
+      'A no-nonsense JSON formatter and validator. Paste anything and it either points out what’s wrong, with a useful error message, or pretty-prints it with proper indentation and highlighting.',
       'Arrays of objects can be converted to CSV for spreadsheets in one click. Everything runs in the browser, so your data never leaves your machine.',
     ],
     features: [
@@ -140,7 +167,7 @@ window.PROJECTS = [
     url: 'https://url.georgel.ca/',
     tagline: 'Turn long URLs into clean, shareable links.',
     description: [
-      'A privacy-first URL shortener. Create a short link anonymously in a second — no sign-up and no personal data collected.',
+      'A privacy-first URL shortener. Create a short link anonymously in a second, with no sign-up and no personal data collected.',
       'If you want to know how a link performs, create an account to keep your links in one place and see clicks and referrers for each one.',
     ],
     features: [
@@ -162,7 +189,7 @@ window.PROJECTS = [
     emoji: '🎪',
     color: '#ff3d8b',
     url: 'https://circus.georgel.ca/',
-    tagline: 'A fast-paced browser game — dodge obstacles and run as far as you can.',
+    tagline: 'A fast-paced browser game. Dodge obstacles and run as far as you can.',
     description: [
       'Circus Runner is an arcade endless runner that plays right in the browser. Tap or click to jump, tap again to double-jump, land on platforms and collect coins while the pace keeps climbing.',
       'It’s built for quick sessions on phone or desktop, and when you beat your record you can share a score card with friends.',
