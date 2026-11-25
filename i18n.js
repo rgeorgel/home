@@ -134,9 +134,15 @@ window.I18N = (() => {
         e.preventDefault();
         store.set(code);
         if (typeof gtag === 'function') gtag('event', 'change_language', { language: code });
+        // Drop a ?lang= from the URL (a query change always reloads). Otherwise reload explicitly:
+        // replacing a URL that only differs by #hash (e.g. index.html#work) would just scroll.
         const clean = new URL(location.href);
-        clean.searchParams.delete('lang');
-        location.replace(clean.pathname + clean.search + clean.hash);
+        if (clean.searchParams.has('lang')) {
+          clean.searchParams.delete('lang');
+          location.replace(clean.pathname + clean.search + clean.hash);
+        } else {
+          location.reload();
+        }
       });
       el.append(a);
     });
